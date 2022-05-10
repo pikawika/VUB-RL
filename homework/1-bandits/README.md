@@ -36,7 +36,7 @@ Your algorithm must be general. However, for information, here are details about
 
 - The bandit represents what happens in a big population of potentially-sick individuals when vaccination strategies are implemented.
    - Pulling one arm maps, in the real world, to:
-      - To the infection of a couple of people
+      - The infection of a couple of people
       - The assignation of vaccines to specific age groups
    - The reward given by the arm is computed from the total amount of people who became sick in 2 or 3 years.
    - You can see why sample-efficiency is important here: in the real world, those kinds of simulations (pulling a single arm) takes about 1 hour on a supercomputer.
@@ -50,6 +50,6 @@ Your algorithm must be general. However, for information, here are details about
 <hr>
 
 
-## TODO
+## Python environment
 
-TODO
+An Anaconda environment based on Python 3.8.10 was used for this homework. More information on this environment can be found
