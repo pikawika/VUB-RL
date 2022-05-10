@@ -1,3 +1,9 @@
+#####################################################
+# REMARKS
+#####################################################
+# This file is taken straight from the RL Assignment 1: Bandits.
+# No edits were made since the aproach taken should be general and should not rely on Bandit knowledge.
+
 import os
 import random
 import numpy as np
