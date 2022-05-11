@@ -205,7 +205,7 @@ With the Anaconda Python environment installed as specified above, running the c
 # Call the main.py file with an optional parameter specifying the number of timesteps to take
 ## Example of filled in call:
 ## & C:/Users/Lennert/.conda/envs/rl-homework/python.exe c:/fast_files/GitHub/VUB-RL/homework/1-bandits/main.py 120
-& & {path/to/conda}/.conda/envs/rl-homework/python.exe {pat/to/github}/VUB-RL/homework/1-bandits/main.py 120
+& & {path/to/conda}/.conda/envs/rl-homework/python.exe {path/to/github}/VUB-RL/homework/1-bandits/main.py 120
 ```
 
 
