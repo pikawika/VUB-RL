@@ -24,13 +24,15 @@ The PDF report of the project can be found [here](paper/Lennert_Bontinck_RL_proj
 
 ## Homework
 
-The RL course has 3 different homework assignments, of which 2 were obligatory. The solutions for these homework assignments can be found here:
+The RL course has 3 different homework assignments, of which 2 were obligatory to be handed in. Since our project resolves around OpenAI Gym, it was opted to drop this assignment and do the other two assignments as deliverable for the obligatory part of the homework.
+
+The solutions for these homework assignments can be found here:
 
 | **Name**                                               | **More information**                        |
 | ------------------------------------------------------ | ------------------------------------------- |
 | Assignment 1: Bandits                                  | Homework folder [here](homework/1-bandits/) |
 | Assignment 2: Tabular Reinforcement Learning in an MDP | Homework folder [here](homework/2-tab_mdp/) |
-| Assignment 3: Reinforcement Learning in the OpenAI Gym | Homework folder [here](homework/3-gym/)     |
+| Assignment 3: Reinforcement Learning in the OpenAI Gym | /                                           |
 
 
 
