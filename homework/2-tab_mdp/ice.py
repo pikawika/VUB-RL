@@ -1,3 +1,8 @@
+#####################################################
+# REMARKS
+#####################################################
+# This file is taken straight from the RL Assignment 2: Tabular Reinforcement Learning in an MDP.
+# No edits were made since our agent should not really depend on this implementation.
 import random
 
 SLIP_PROBA = 0.05

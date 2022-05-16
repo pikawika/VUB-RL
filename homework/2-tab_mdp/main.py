@@ -1,11 +1,32 @@
+#!/usr/bin/python3
+#####################################################
+# ABOUT THIS FILE
+#####################################################
+# Main file for RL Assignment 1: Bandits.
+# Author: Lennert Bontick.
+# Student ID: 0568702.
+# VUB mail: lennert.bontinck@vub.be.
+
+#####################################################
+# REMARKS
+#####################################################
+# Example call: path/to/main.py.
+# Please read the README.md file for more information on my solution.
+
+#####################################################
+# IMPORTS
+#####################################################
+
 import random
 
 from ice import *
 
-EPISODES = 100000
-EPSILON = 0.1
-GAMMA = 0.9
-LEARNING_RATE = 0.1
+
+
+EPISODES = 100 # Default: 100000
+EPSILON = 0.1 # Default: 0.1
+GAMMA = 0.9 # Default: 0.9
+LEARNING_RATE = 0.1 # Default: 0.1
 
 def argmax(l):
     """ Return the index of the maximum element of a list

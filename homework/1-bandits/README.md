@@ -114,7 +114,7 @@ ln(t) = \text{natural log of the current time step}
 N_t = \text{number of times action a was performed so far}
 $$
 
-It is noted that [the excellent explanatory video by ritvikmath](https://youtu.be/FgmMK6RPU1c) was used to gain further insight on UCB. It thought us that one area where UCB is known to struggle is when there are a lot of arms and a small number of timesteps. In such a scenario purely greedy algorithms can outperform UCB, which might take too much time in trying to explore and stabilise the estimated reward of all arms first before becoming greedy. Having 32 arms and taking into account that an arm pull would take around an hour on a super computer, it is not unreasonable to think this could form a problem. However, we still believe as a general approach UCB is better than a more greedy approach which might have better results on limited timesteps but is expected to become worse again once timesteps increases. It is also possible to lower `c` in the equation above to increase the greediness of the algorithm.
+It is noted that [the excellent explanatory video by ritvikmath](https://youtu.be/FgmMK6RPU1c) was used to gain further insight on UCB. It thought us that one area where UCB is known to struggle is when there are a lot of arms and a small number of timesteps. This is also visible in Figure 2.4 of the handbook where UCB performs slightly worse than epsilon greedy in scenarios where there are very few samples/timesteps but outperforms it when more timesteps become available. Intuitively, what happens here is that UCB takes too much time in trying to explore and stabilise the estimated reward of all arms first before becoming greedy and due to the limited timesteps the algorithm never becomes greedy. Having 32 arms and taking into account that an arm pull would take around an hour on a super computer, it is not unreasonable to think this could form a problem. However, we still believe as a general approach UCB is better than a more greedy approach which might have better results on limited timesteps but is expected to become worse again once timesteps increases. It is also possible to lower `c` in the equation above to increase the greediness of the algorithm. Based on this knowledge, we configure our agent automatically based on the number of arms and timesteps available, to combat the initial poorer performance somewhat. 
 
 
 
@@ -153,20 +153,20 @@ else:
     )
 ```
 
-As you can see, in the case there are few samples we have an agent that performs more greedy due to a lower weighting factor C for the UCB and initialisation of 0. On the contrary, when there are many samples, we allow for more exploration by increasing the weighting factor C for the UCB and using the optimal value as the initial value. Neither of the two uses the recency weighted average as we believe it to be unnecessary in this setting.
+As you can see, in the case there are few samples we have an agent that performs more greedy due to a lower weighting factor C for the UCB and initialisation of 0. On the contrary, when there are many samples, we allow for more exploration by increasing the weighting factor C for the UCB and using the optimal value as the initial value. Neither of the two uses the recency weighted average as we believe it to be unnecessary in this setting, but it is available in case there would be a moving target for example.
 
 
 
 ### Results
 
-We consider three experiments of which each was performed 10 times. The results of these experiments are available in the `experiment_results.xlsx` Excel file:
+We consider three experiments of which each was performed 10 times. The results of these experiments are available in the `experiment_results.xlsx` Excel file. A textual summary as well as an overview table is given below.
 
 - 120 samples, corresponding to 5 days of supercomputer time if 1 action corresponds with 1 hour (24 * 5 = 120)
    - The average total reward is: 30.4119
    - The average reward per action is: 0.2534
    - 8/10 times arm 0 was most chosen, the other 2 this was arm 1
    - When arm 0 is most chosen, it is on average chosen 14.1667% of the time
-- 1000 samples, to test the performance of a less greedy agent on a relative small sample size
+- 1000 samples, to test the performance of a less greedy agent on a relatively small sample size
    - The average total reward is: 254.0991
    - The average reward per action is: 0.2540
    - 8/10 times arm 0 was most chosen, the other 2 this was arm 1 and 7
@@ -189,7 +189,7 @@ We consider three experiments of which each was performed 10 times. The results 
 
 ### Conclusion
 
-We created an agent that is capable of using the Upper Confidence Bound (UCB) approach for learning the K-armed bandit game. We didn't use any task specific information and determine upon initialisation if we want a more or less greedy agent based on the number of samples available and the number of arms available. The latter is done since it is known that UCB can be too exploratory if the total allowed samples are relatively low. Our results all point to arm 0 being the best arm and as samples increase the average reward also increases, as does the average choice for arm 0. The parameters of the agent can be set upon the initialisation of the agent and a recency-weighted estimated reward variant is possible although not used for our experiments.
+We created an agent that is capable of using the Upper Confidence Bound (UCB) approach for learning the K-armed bandit game. We didn't use any task specific information and thus believe our approach is general. Upon initialisation, a check chooses if we want a more or less greedy agent based on the number of samples available and the number of arms available. The latter is done since it is known that UCB can be too exploratory if the total allowed samples are relatively low resulting in poorer performance than epsilon greedy for example. Our results all point to arm 0 being the best arm and as samples increase the average reward also increases, as does the average choice for arm 0. The parameters of the agent can be set upon the initialisation of the agent and a recency-weighted estimated reward variant is made available although not used for our experiments.
 
 
 <hr>
@@ -205,7 +205,7 @@ With the Anaconda Python environment installed as specified above, running the c
 # Call the main.py file with an optional parameter specifying the number of timesteps to take
 ## Example of filled in call:
 ## & C:/Users/Lennert/.conda/envs/rl-homework/python.exe c:/fast_files/GitHub/VUB-RL/homework/1-bandits/main.py 120
-& & {path/to/conda}/.conda/envs/rl-homework/python.exe {path/to/github}/VUB-RL/homework/1-bandits/main.py 120
+& {path/to/conda}/.conda/envs/rl-homework/python.exe {path/to/github}/VUB-RL/homework/1-bandits/main.py 120
 ```
 
 
