@@ -30,6 +30,7 @@ from ice import *
 EPISODES = 100 # Default: 100000
 EPSILON = 0.1 # Default: 0.1 - rate of selecting random action
 GAMMA = 0.9 # Default: 0.9 - discount factor
+LEARNING_RATE = 0.1 # Default: 0.1 - often alpha
 
 #####################################################
 # TEACHER PROVIDED FUNCTIONS
