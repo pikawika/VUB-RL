@@ -4,15 +4,24 @@ This readme file gives more information on the second assignment of the Reinforc
 
 ## Table of contents
 
-- [Contact information](#contact-information)
-- [Assignment](#assignment)
-- [Challenge of the homework](#challenge-of-the-homework)
-   - [About MDPs](#about-mdps)
-   - [Solving the Bellman optimality equation](#solving-the-bellman-optimality-equation)
-   - [Off-policy vs on-policy approaches](#off-policy-vs-on-policy-approaches)
+- [Assignment 2: Tabular Reinforcement Learning in an MDP](#assignment-2-tabular-reinforcement-learning-in-an-mdp)
+  - [Table of contents](#table-of-contents)
+  - [Contact information](#contact-information)
+  - [Assignment](#assignment)
+  - [Challenge of the homework](#challenge-of-the-homework)
+    - [About MDPs](#about-mdps)
+    - [Solving the Bellman optimality equation](#solving-the-bellman-optimality-equation)
+    - [Off-policy vs on-policy approaches](#off-policy-vs-on-policy-approaches)
+  - [Discussion on the solution](#discussion-on-the-solution)
+    - [Choosing an approach](#choosing-an-approach)
+    - [Double Q-learning](#double-q-learning)
+    - [Results](#results)
+  - [Running the code (TODO: EDIT)](#running-the-code-todo-edit)
 
 - [Discussion on the solution](#discussion-on-the-solution)
-   - [TODO]
+   - [Choosing an approach](#choosing-an-approach)
+   - [Double Q-learning](#double-q-learning)
+   - [Results](#results)
 - [Running the code](#running-the-code)
 
 <hr>
@@ -111,9 +120,21 @@ The risks and potential issues of using these approaches were further discussed 
 
 ## Discussion on the solution
 
-TODO
+After having analysed the problem in question and revising the theory, we decided which algorithm we found appropriate to implement. The reasoning behind this chosen algorithm, some properties and the results are discussed here.
 
 ### Choosing an approach
+
+Q-learning is a very popular model-free off-policy reinforcement learning algorithm. It has proven to be very powerful whilst being relatively simple. However, as it uses an off-policy reward update rule where the maximum reward over all actions of the next state is used, there is the possibility of maximisation bias. This maximisation bias can result in poor policy decisions by the algorithm in certain stochastic environments, such as the class discussed cliff walking environment where SARSA resulted in a better overall policy as it opted for a safer route.
+
+Whilst this would opt us to choosing SARSA over Q-learning, we believe Q-learning is such a fundamental algorithm in RL it should not be dismissed and is probably more valuable from an educational aspect to implement. To make things more interesting, the variation on the classical Q-learning algorithm called double Q-learning is chosen. Double Q-learning aims to reduce the maximisation bias as discussed during the lecture. 
+
+### Double Q-learning
+
+As discussed, we opted to implement a double Q-learning algorithm for the agent to find an optimal policy in the provided `ice.py`environment. More information on the working of double Q-learning was gained from reading both the handbook and an [online article by Ziad Salloum](https://towardsdatascience.com/double-q-learning-the-easy-way-a924c4085ec3). The latter also had a sample python implementation of the double Q-learning algorithm which was used to gain further insight on how to implement it our own.
+
+Contrary to the first assignment, creating a true general agent is hard, as the agent relies on environment specific details such as the actions available per state etc. Whilst this could all be made to be passed as a parameter, this would make the code overly complex and thus it was opted to hardcode our agent class to this specific problem somewhat. It is noted that the double q learning algorithm implemented is based on the pseudocode for double q learning given in both the lecture as well as the handbook. Here, epsilon greedy makes use of both Q tables for selecting it's next action.
+
+### Results
 
 TODO
 
