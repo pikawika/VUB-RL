@@ -99,21 +99,8 @@ Intuitively, the idea behind this is as follows. Imagine we have two arms where 
 - Thus, as humans would intuitively also do, we want to base our selection not only on the expected reward but also on how certain we are of those expected rewards. This is what UCB aims to achieve. 
 
 UCB builds on the idea described above by using an action selection function as follows:
-$$
-A_t = argmax_a (Q_t(a) + c \sqrt{\frac{ln(t)}{N_t(a)}})
-\\ \\
-A_t = \text{Action taken at timestep } t
-\\ \\
-Q_t = \text{Action value estimate, favours exploitation}
-\\ \\
-c \sqrt{\frac{ln(t)}{N_t(a)}} = \text{Part for clever exploration based on Hoeffding's inequality}
-\\ \\
-c = \text{Weighting factor for controlling exploration behaviour}
-\\ \\
-ln(t) = \text{natural log of the current time step}
-\\ \\
-N_t = \text{number of times action a was performed so far}
-$$
+
+![UCB](../imgs/1/ucb.png)
 
 It is noted that [the excellent explanatory video by ritvikmath](https://youtu.be/FgmMK6RPU1c) was used to gain further insight on UCB. It thought us that one area where UCB is known to struggle is when there are a lot of arms and a small number of timesteps. This is also visible in Figure 2.4 of the handbook where UCB performs slightly worse than epsilon greedy in scenarios where there are very few samples/timesteps but outperforms it when more timesteps become available. Intuitively, what happens here is that UCB takes too much time in trying to explore and stabilise the estimated reward of all arms first before becoming greedy and due to the limited timesteps the algorithm never becomes greedy. Having 32 arms and taking into account that an arm pull would take around an hour on a super computer, it is not unreasonable to think this could form a problem. However, we still believe as a general approach UCB is better than a more greedy approach which might have better results on limited timesteps but is expected to become worse again once timesteps increases. It is also possible to lower `c` in the equation above to increase the greediness of the algorithm. Based on this knowledge, we configure our agent automatically based on the number of arms and timesteps available, to combat the initial poorer performance somewhat. 
 

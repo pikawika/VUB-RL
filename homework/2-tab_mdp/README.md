@@ -55,33 +55,22 @@ The goal of this project is to learn the optimal policy as fast as possible. Bon
 ### About MDPs
 
 The provided `ice.py` environment is a Markov Decision Process (MDP). MDPs are a mathematically idealized form of the reinforcement learning problem with specific properties. MDPs are a critical component of RL as discussed during the lectures. MDPs allow for formal definitions of RL problems and making theoretical statements. A typical MDP can be described as follows:
-$$
-\text{MDP} = \{ S, A, R, \gamma, p \}
-\\
-S = \text{A set of states}
-\\
-A = \text{A set of actions}
-\\
-R = \text{A set of rewards}
-\\
-\gamma = \text{A discount factor, } \gamma \in [0.1]
-\\
-p = \text{A transition function which desribes the dynamics}
-$$
+
+![Math](../imgs/2/mdp.png)
+
 From this definition, one can see that it does allow for defining typical RL problems. Many variants of MDPs exist, with many of them often assuming certain properties such as the *Markov property*. Intuitively, this property means that the transition from the current state to the next state is only dependent on the current state not on the previous state the agent was in. Thus, all states of the MDP must include information about all aspects of the past agent-environment interaction that make a difference in the future. The handbook goes over these and other properties that are often assumed in more detail.
 
 As typical RL problems can be represented as MDPs, trying to solve MDPs corresponds to solving the formalized RL problems. When we talk about solving an MDP, we talk about the goal of acting in the MDP such that the expected discounted return is maximized, given in the equation below.
-$$
-G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ... = \sum_{k=0}^{\infty}{\gamma^k R_{t+k+1}}
-$$
+
+![Math](../imgs/2/gt.png)
+
 From this equation, it becomes visible how important it is to choose a good discount factor since a low lambda will result in a *myopic agent* (~greedy) and a high lambda will result in a *farsighted agent* (~exploratory). As a result, not only the reward but also the discount factor determine the goal. It is noted that for some situations the lambda can be 1, resulting in an undiscounted expected return.
 
 Repeating all other definitions such as the *state-value function*, *action-value function* and *Bellman optimality equations* here is found to be unnecessary as this would be a simple repetition of the lecture and handbook. It is however important to note the difference between policy evaluation and control:
-$$
-\text{Estimating state-value function } v_\pi \text{ or action-value function } q_\pi  \text{ is called policy evaluation or prediction}
-\\
-\text{Estimating optimal state-value function } v_* \text{ or optimal action-value function } q_*  \text{ is called control as it can be used for policy optimization}
-$$
+
+![Math](../imgs/2/policy.png)
+
+
 
 
 ### Solving the Bellman optimality equation
@@ -135,55 +124,25 @@ Contrary to the first assignment, creating a true general agent is hard, as the 
 ### Possible game paths and expected results
 
 When considering the environment the agent operates in, there are three possible paths an agent can *logically* take. Remember the game looks like this:
-$$
-\begin{bmatrix}
-- & - & - & G \\
-- & * & - & * \\
-- & - & T & *  \\
-S & * & * & *
-\end{bmatrix}
-$$
+
+![Game](../imgs/2/grid.png)
+
+
 Where:
-$$
-S = \text{'Start' state of agent}
-\\
-T = \text{'Treasure' state with a reward of 20}
-\\
-- = \text{'Regular' state with a reward of 0}
-\\
-* = \text{'Pit' state with a reward of -10, ends the game}
-\\
-G = \text{'Goal' state with a reward of 100, ends the game}
-$$
+
+![Game](../imgs/2/grid_states.png)
+
 Since the environment is stochastic, it means that the action taken by the agent is not guaranteed to be executed. The first obvious path with a total reward of 100 looks like this:
-$$
-\begin{bmatrix}
-RIGHT & RIGHT & RIGHT & G \\
-UP & * & - & * \\
-UP & - & T & *  \\
-S & * & * & *
-\end{bmatrix}
-$$
+
+![Game path](../imgs/2/path1.png)
 
 An alternative path with a total reward of 120 is as follows:
-$$
-\begin{bmatrix}
-- & - & RIGHT & G \\
-- & * & UP & * \\
-RIGHT & RIGHT & T/UP & *  \\
-S & * & * & *
-\end{bmatrix}
-$$
+
+![Game path](../imgs/2/path2.png)
 
 Finally, such an agent might get stuck in a situation where it enters and leaves the *Treasure* state over and over again. If the environment were to be deterministic, this would result in a reward of 20 every other move. A possible approach to this could look like this:
-$$
-\begin{bmatrix}
-- & - & - & G \\
-- & * & DOWN & * \\
-RIGHT & RIGHT & T/UP & *  \\
-S & * & * & *
-\end{bmatrix}
-$$
+
+![Game path](../imgs/2/path3.png)
 
 The stochasticity of the environment is in the fact that a taken action might fail which results in the agent not moving. Thus, for the last possible path, this kind of stochasticity doesn't form an issue as the agent is not thrown into a pit resulting in a negative reward. The agent would only end up in a pit in that situation if the epsilon-greedy mechanism tries a random move which results in going into the pit.
 
