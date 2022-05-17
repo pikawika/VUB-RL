@@ -4,25 +4,9 @@ This readme file gives more information on the second assignment of the Reinforc
 
 ## Table of contents
 
-- [Assignment 2: Tabular Reinforcement Learning in an MDP](#assignment-2-tabular-reinforcement-learning-in-an-mdp)
-  - [Table of contents](#table-of-contents)
-  - [Contact information](#contact-information)
-  - [Assignment](#assignment)
-  - [Challenge of the homework](#challenge-of-the-homework)
-    - [About MDPs](#about-mdps)
-    - [Solving the Bellman optimality equation](#solving-the-bellman-optimality-equation)
-    - [Off-policy vs on-policy approaches](#off-policy-vs-on-policy-approaches)
-  - [Discussion on the solution](#discussion-on-the-solution)
-    - [Choosing an approach](#choosing-an-approach)
-    - [Double Q-learning](#double-q-learning)
-    - [Results](#results)
-  - [Running the code (TODO: EDIT)](#running-the-code-todo-edit)
+[TOC]
 
-- [Discussion on the solution](#discussion-on-the-solution)
-   - [Choosing an approach](#choosing-an-approach)
-   - [Double Q-learning](#double-q-learning)
-   - [Results](#results)
-- [Running the code](#running-the-code)
+
 
 <hr>
 
@@ -126,15 +110,78 @@ After having analysed the problem in question and revising the theory, we decide
 
 Q-learning is a very popular model-free off-policy reinforcement learning algorithm. It has proven to be very powerful whilst being relatively simple. However, as it uses an off-policy reward update rule where the maximum reward over all actions of the next state is used, there is the possibility of maximisation bias. This maximisation bias can result in poor policy decisions by the algorithm in certain stochastic environments, such as the class discussed cliff walking environment where SARSA resulted in a better overall policy as it opted for a safer route.
 
-Whilst this would opt us to choosing SARSA over Q-learning, we believe Q-learning is such a fundamental algorithm in RL it should not be dismissed and is probably more valuable from an educational aspect to implement. To make things more interesting, the variation on the classical Q-learning algorithm called double Q-learning is chosen. Double Q-learning aims to reduce the maximisation bias as discussed during the lecture. 
+Whilst this would opt us to choose SARSA over Q-learning, we believe Q-learning is such a fundamental algorithm in RL it should not be dismissed and is probably more valuable from an educational aspect to implement. To make things more interesting, the variation on the classical Q-learning algorithm called double Q-learning is chosen. Double Q-learning aims to reduce the maximisation bias as discussed during the lecture. 
 
 ### Double Q-learning
 
-As discussed, we opted to implement a double Q-learning algorithm for the agent to find an optimal policy in the provided `ice.py`environment. More information on the working of double Q-learning was gained from reading both the handbook and an [online article by Ziad Salloum](https://towardsdatascience.com/double-q-learning-the-easy-way-a924c4085ec3). The latter also had a sample python implementation of the double Q-learning algorithm which was used to gain further insight on how to implement it our own.
+As discussed, we opted to implement a double Q-learning algorithm for the agent to find an optimal policy in the provided `ice.py`environment. More information on the working of double Q-learning was gained from reading both the handbook and an [online article by Ziad Salloum](https://towardsdatascience.com/double-q-learning-the-easy-way-a924c4085ec3). The latter also had a sample python implementation of the double Q-learning algorithm which was used to gain further insight on how to implement it on our own.
 
-Contrary to the first assignment, creating a true general agent is hard, as the agent relies on environment specific details such as the actions available per state etc. Whilst this could all be made to be passed as a parameter, this would make the code overly complex and thus it was opted to hardcode our agent class to this specific problem somewhat. It is noted that the double q learning algorithm implemented is based on the pseudocode for double q learning given in both the lecture as well as the handbook. Here, epsilon greedy makes use of both Q tables for selecting it's next action.
+Contrary to the first assignment, creating a true general agent is hard, as the agent relies on environment specific details such as the actions available per state etc. Whilst this could all be made to be passed as a parameter, this would make the code overly complex and thus it was opted to hardcode our agent class to this specific problem somewhat. It is noted that the double q learning algorithm implemented is based on the pseudocode for double q learning given in both the lecture as well as the handbook. Here, epsilon greedy makes use of both Q tables for selecting its next action.
+
+### Possible game paths and expected results
+
+When considering the environment the agent operates in, there are three possible paths an agent can *logically* take. Remember the game looks like this:
+$$
+\begin{bmatrix}
+- & - & - & G \\
+- & * & - & * \\
+- & - & T & *  \\
+S & * & * & *
+\end{bmatrix}
+$$
+Where:
+$$
+S = \text{'Start' state of agent}
+\\
+T = \text{'Treasure' state with a reward of 20}
+\\
+- = \text{'Regular' state with a reward of 0}
+\\
+* = \text{'Pit' state with a reward of -10, ends the game}
+\\
+G = \text{'Goal' state with a reward of 100, ends the game}
+$$
+Since the environment is stochastic, it means that the action taken by the agent is not guaranteed to be executed. The first obvious path with a total reward of 100 looks like this:
+$$
+\begin{bmatrix}
+RIGHT & RIGHT & RIGHT & G \\
+UP & * & - & * \\
+UP & - & T & *  \\
+S & * & * & *
+\end{bmatrix}
+$$
+
+An alternative path with a total reward of 120 is as follows:
+$$
+\begin{bmatrix}
+- & - & RIGHT & G \\
+- & * & UP & * \\
+RIGHT & RIGHT & T/UP & *  \\
+S & * & * & *
+\end{bmatrix}
+$$
+
+Finally, such an agent might get stuck in a situation where it enters and leaves the *Treasure* state over and over again. If the environment were to be deterministic, this would result in a reward of 20 every other move. A possible approach to this could look like this:
+$$
+\begin{bmatrix}
+- & - & - & G \\
+- & * & DOWN & * \\
+RIGHT & RIGHT & T/UP & *  \\
+S & * & * & *
+\end{bmatrix}
+$$
+
+The stochasticity of the environment is in the fact that a taken action might fail which results in the agent not moving. Thus, for the last possible path, this kind of stochasticity doesn't form an issue as the agent is not thrown into a pit resulting in a negative reward. The agent would only end up in a pit in that situation if the epsilon-greedy mechanism tries a random move which results in going into the pit.
+
+This shows us that not only the reward and the discount factor may influence the agent but also the choosen epsilon value may influence the agent. Indeed, an agent with a high discount factor and low epsilon might converge to the last strategy, whilst one with a low discount factor but high epsilon might converge to the first discussed path.
 
 ### Results
+
+TODO
+
+
+
+### Further thoughts
 
 TODO
 
@@ -144,11 +191,13 @@ TODO
 <hr>
 
 
-## Running the code (TODO: EDIT)
+## Running the code
 
 An Anaconda environment based on Python 3.8.10 was used for this homework. More information on this environment can be found in the [Anaconda environment documentation for the homework](../../documentation/README.md).
 
 With the Anaconda Python environment installed as specified above, running the code is as simple as calling the `main.py` file.
+
+In the top of the main.py file the most important parameters can be set.
 
 ```bash
 # Call the main.py file with an optional parameter specifying the number of timesteps to take
