@@ -4,8 +4,22 @@ This readme file gives more information on the second assignment of the Reinforc
 
 ## Table of contents
 
-[TOC]
 
+- [Assignment 2: Tabular Reinforcement Learning in an MDP](#assignment-2-tabular-reinforcement-learning-in-an-mdp)
+  - [Table of contents](#table-of-contents)
+  - [Contact information](#contact-information)
+  - [Assignment](#assignment)
+  - [Challenge of the homework](#challenge-of-the-homework)
+    - [About MDPs](#about-mdps)
+    - [Solving the Bellman optimality equation](#solving-the-bellman-optimality-equation)
+    - [Off-policy vs on-policy approaches](#off-policy-vs-on-policy-approaches)
+  - [Discussion on the solution](#discussion-on-the-solution)
+    - [Choosing an approach](#choosing-an-approach)
+    - [Double Q-learning](#double-q-learning)
+    - [Possible game paths and expected results](#possible-game-paths-and-expected-results)
+    - [Results](#results)
+    - [Further thoughts](#further-thoughts)
+  - [Running the code](#running-the-code)
 
 
 <hr>

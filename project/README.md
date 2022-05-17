@@ -4,8 +4,10 @@ This readme goes over the files and documents available for the RL project by Le
 
 ## Table of contents
 
-- [Contact information](#contact-information)
-- [Todo](#todo)
+- [Reinforcement Learning Project @ VUB 2021 - 2022](#reinforcement-learning-project-vub-2021-2022)
+  * [Table of contents](#table-of-contents)
+  * [Contact information](#contact-information)
+  * [Todo](#todo)
 
 <hr>
 

@@ -4,12 +4,13 @@ To make reproducing the RL homeworks and project easier, some documentation is p
 
 ## Table of contents
 
-- [Contact information](#contact-information)
-- [Homework](#homework)
-  - [Setup Anaconda environment](#setup-anaconda-environment)
-  - [Import Anaconda environment](#import-anaconda-environment)
-  
-- [Project](#project)
+- [Documentation for RL homeworks and project](#documentation-for-rl-homeworks-and-project)
+  * [Table of contents](#table-of-contents)
+  * [Contact information](#contact-information)
+  * [Homework](#homework)
+    + [Setup Anaconda environment](#setup-anaconda-environment)
+    + [Import Anaconda environment](#import-anaconda-environment)
+  * [Project](#project)
 
 <hr>
 

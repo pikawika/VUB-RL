@@ -4,18 +4,19 @@ This readme file gives more information on the first assignment of the Reinforce
 
 ## Table of contents
 
-- [Contact information](#contact-information)
-- [Assignment](#assignment)
-   - [About the assignment](#about-the-assignment)
-   - [About the bandit](#about-the-bandit)
-- [Challenge of the homework](#challenge-of-the-homework)
-- [Discussion on the solution](#discussion-on-the-solution)
-   - [Upper Confidence Bound](#upper-confidence-bound)
-   - [Implementation](#implementation)
-   - [Results](#results)
-   - [Conclusion](#conclusion)
-   
-- [Running the code](#running-the-code)
+- [Assignment 1: Bandits](#assignment-1-bandits)
+  - [Table of contents](#table-of-contents)
+  - [Contact information](#contact-information)
+  - [Assignment](#assignment)
+    - [About the assignment](#about-the-assignment)
+    - [About the bandit](#about-the-bandit)
+  - [Challenge of the homework](#challenge-of-the-homework)
+  - [Discussion on the solution](#discussion-on-the-solution)
+    - [Upper Confidence Bound](#upper-confidence-bound)
+    - [Implementation](#implementation)
+    - [Results](#results)
+    - [Conclusion](#conclusion)
+  - [Running the code](#running-the-code)
 
 <hr>
 

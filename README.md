@@ -6,9 +6,11 @@ The PDF report of the project can be found [here](paper/Lennert_Bontinck_RL_proj
 
 ## Table of contents
 
-- [Contact information](#contact-information)
-- [Homework](#homework)
-- [Project](#project)
+- [Reinforcement Learning @ VUB 2021 - 2022](#reinforcement-learning--vub-2021---2022)
+  - [Table of contents](#table-of-contents)
+  - [Contact information](#contact-information)
+  - [Homework](#homework)
+  - [Project](#project)
 
 <hr>
 
