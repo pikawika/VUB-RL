@@ -20,6 +20,8 @@ This readme file gives more information on the second assignment of the Reinforc
     - [Double Q-learning](#double-q-learning)
     - [Possible game paths and expected results](#possible-game-paths-and-expected-results)
     - [Results](#results)
+      - [Using the provided settings](#using-the-provided-settings)
+      - [Higher discount factor with lower epsilon](#higher-discount-factor-with-lower-epsilon)
     - [Further thoughts](#further-thoughts)
   - [Running the code](#running-the-code)
 
@@ -146,19 +148,68 @@ Finally, such an agent might get stuck in a situation where it enters and leaves
 
 ![Game path](../imgs/2/path3.png)
 
-The stochasticity of the environment is in the fact that a taken action might fail which results in the agent not moving. Thus, for the last possible path, this kind of stochasticity doesn't form an issue as the agent is not thrown into a pit resulting in a negative reward. The agent would only end up in a pit in that situation if the epsilon-greedy mechanism tries a random move which results in going into the pit.
+Alternatively, the above path could loop by going left or right instead of up or down.
 
-This shows us that not only the reward and the discount factor may influence the agent but also the choosen epsilon value may influence the agent. Indeed, an agent with a high discount factor and low epsilon might converge to the last strategy, whilst one with a low discount factor but high epsilon might converge to the first discussed path.
+The stochasticity of the environment is in the fact that a taken action might fail which results in the agent not moving. Thus, for the last possible path, this kind of stochasticity doesn't form an issue as the agent is not thrown into a pit resulting in a negative reward. The agent would only end up in a pit in that situation if the epsilon-greedy mechanism tries a random move which results in going into the pit. This shows us that not only the reward and the discount factor may influence the agent but also the chosen epsilon value may influence the agent. 
+
+From this understanding, we predict that path 1 (straight to goal) and path 2 (treasure and goal) are both good solutions and the gamma will likely influence which is preferred, i.e. a higher discount factor (lower gamma value) in combination with perhaps a lower epsilon value would favour path 2. Path 3 (loopy treasure) is only *viable* if the agent doesn't fall in a pit often (e.g. before collecting 100+ total rewards of that game) and thus epsilon is very low. However, when thinking about 'reward per step' rather than 'reward per game', it is also likely that path 3 can't outperform path 2, which we think is the optimal path since it is of equal length as path 1 yet results in a higher reward. It is important to remember that the stochasticity leaves the agent in the same place, it does not let him take a random action even though another one is selected, thus our only chance of "dying" is when our agent deliberately steps into a pit (e.g. due to a random choice in epsilon greedy).
 
 ### Results
 
-TODO
+As discussed, we see three different kinds of paths that might be viable for the agent and we think that depending on the settings of the agent, the chosen path might change. Thus we do different experiments with different parameters for differing amounts of episodes and document the findings here. With found paths we talk about the previously mentioned three paths where:
+
+- 1= Path to the goal without treasure, a total reward of 100
+- 2= Path to goal with treasure, a total reward of 120 
+- 3= Path looping the treasure
+
+All results are stored in the excel file: `experiment_results.xlsx`.
+
+#### Using the provided settings
+
+Using the provided settings of:
+
+- Epsilon (Random selection for epsilon-greedy) = 0.1
+- Gamma (Discount factor) = 0.9
+- Learning rate (Alpha in our equations) = 0.1
+
+We perform 10 trials for each setting of total games played and found that:
+
+| **Total games played** | **AVG game reward** | **AVG iteration reward** | **Path 1** | **Path 2** | Path 3 |
+| ---------------------- | ------------------- | ------------------------ | ---------- | ---------- | ------ |
+| 100                    | 83,65               | 6,98                     | 30%        | 0%         | 70%    |
+| 1'000                  | 98,10               | 10,08                    | 20%        | 40%        | 40%    |
+| 10'000                 | 91,71               | 13,81                    | 50%        | 50%        | 0%     |
+| 100'000                | 91,04               | 15,32                    | 80%        | 20%        | 0%     |
+
+When playing 10k and 100k games, the agent has learned both paths 2 and 1 and would never take path 3 when looking at the Q-values. It is also visible that the agent fluctuates between path 1 and 2 in these later cases and it is highly likely the action from the state above the start state to choose path 1 or 2 has comparable Q values for taking a step upward (path 1) and to the right (path 2).
+
+#### Higher discount factor with lower epsilon
+
+We discussed that we think a higher discount factor (i.e. lower gamma value) combined with a lower epsilon (lower chance of taking random action which might result in pit fall) would make the agent opt for the second more often/faster. Perhaps, path 3 is also chosen more since the agent is very unlikely to make an unexpected move, thus the loop where every other move results in a reward of 20 is preferred (not taking into account the random slip chance from the MDP where the agent doesn't move). To test this, we performed experiments using the following settings:
+
+- Epsilon (Random selection for epsilon-greedy) = 0.02 instead of 0.1
+- Gamma (Discount factor) = 0.2 instead of 0.9
+- Learning rate (Alpha in our equations) = 0.1
+
+Since our epsilon is lower, convergence at low total games is highly unlikely so we don't consider the 100 games played case:
+
+| **Total games played** | **AVG game reward** | **AVG iteration reward** | **Path 1** | **Path 2** | Path 3 |
+| ---------------------- | ------------------- | ------------------------ | ---------- | ---------- | ------ |
+| 1'000                  | 169,26              | 11,7                     | 40%        | 20%        | 40%    |
+| 10'000                 | 121,12              | 13,78                    | 0%         | 100%       | 0%     |
+| 100'000                | 104,26              | 17,55                    | 0%         | 100%       | 0%     |
+
+Our assumption that the agent would now favour path 2 was correct, and this path results in a higher average game reward and iteration (step) reward, as expected. The agent didn't take path 3 more often though.
+
+Thinking about this further, we see that whilst our reasoning is correct and a loopy game of entering and leaving the treasure state over and over again does result in a higher game reward, it most likely results in a lower reward per step. Thus, the optimal strategy still is path 2, which the agent finds given enough iterations since the epsilon is so low.
 
 
 
 ### Further thoughts
 
-TODO
+Given the right parameters, the agent can find the optimal path 2, which picks the treasure along the way to the reward. Knowing that our environment is stochastic but with fixed targets, we believe our algorithm could be improved further by a time-decaying epsilon or perhaps even an algorithm such as Upper Confidence Bound (UCB) for choosing an action. Nonetheless, our implementation and reasoning show that we now better understand the concepts from class.
+
+For an optimal agent given a certain amount of available episodes, the alpha and epsilon parameters should be finetuned together with the learning rate.
 
 
 
@@ -172,7 +223,7 @@ An Anaconda environment based on Python 3.8.10 was used for this homework. More 
 
 With the Anaconda Python environment installed as specified above, running the code is as simple as calling the `main.py` file.
 
-In the top of the main.py file the most important parameters can be set.
+At the top of the main.py file the most important parameters can be set.
 
 ```bash
 # Call the main.py file with an optional parameter specifying the number of timesteps to take

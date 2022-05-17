@@ -2,7 +2,7 @@
 #####################################################
 # ABOUT THIS FILE
 #####################################################
-# Main file for RL Assignment 1: Bandits.
+# Main file for RL Assignment 2: MDPs.
 # Author: Lennert Bontick.
 # Student ID: 0568702.
 # VUB mail: lennert.bontinck@vub.be.
@@ -27,10 +27,10 @@ from ice import *
 #####################################################
 # One can define the global variables here 
 
-EPISODES = 100 # Default: 100000
-EPSILON = 0.1 # Default: 0.1 - rate of selecting random action
-GAMMA = 0.9 # Default: 0.9 - discount factor
-LEARNING_RATE = 0.1 # Default: 0.1 - often alpha
+EPISODES = 100000 # Teacher provided: 100000 | Student: 100000
+EPSILON = 0.02 # Rate of selecting random action - Teache provided: 0.1 | Student: 0.02
+GAMMA = 0.2 # Discount factor - Teacher provided: 0.9 | Student: 0.2
+LEARNING_RATE = 0.1 # Alpha - Teacher provided: 0.1 | Student: 0.1
 
 #####################################################
 # TEACHER PROVIDED FUNCTIONS
@@ -40,7 +40,8 @@ LEARNING_RATE = 0.1 # Default: 0.1 - often alpha
 ## are needed by the teacher.
 
 def argmax(l):
-    """ Return the index of the maximum element of a list
+    """
+    Return the index of the maximum element of a list
     """
     return max(enumerate(l), key=lambda x:x[1])[0]
 
@@ -143,12 +144,16 @@ class DoubleQLearningIceAgent(object):
             Q2value_for_Q1_max_action_in_new_state = self.Q2[new_state][argmax_random(self.Q1[new_state])]
             Q1value_for_current_state_action = self.Q1[current_state][action]
             
-            self.Q1[current_state][action] = Q1value_for_current_state_action + self.alpha * (reward + self.gamma * (Q2value_for_Q1_max_action_in_new_state - Q1value_for_current_state_action))
+            self.Q1[current_state][action] += self.alpha * \
+                (reward + \
+                    (self.gamma * Q2value_for_Q1_max_action_in_new_state) -  Q1value_for_current_state_action)
         else:
             Q1value_for_Q2_max_action_in_new_state = self.Q1[new_state][argmax_random(self.Q2[new_state])]
             Q2value_for_current_state_action = self.Q2[current_state][action]
             
-            self.Q2[current_state][action] = Q2value_for_current_state_action + self.alpha * (reward + self.gamma * (Q1value_for_Q2_max_action_in_new_state - Q2value_for_current_state_action))
+            self.Q2[current_state][action] += self.alpha * \
+                (reward + \
+                    (self.gamma * Q1value_for_Q2_max_action_in_new_state) -  Q2value_for_current_state_action)
             
     def __choose_action_epsilon_greedy(self):
         """
@@ -192,9 +197,9 @@ class DoubleQLearningIceAgent(object):
         
         # Check if end is reached
         if reached_termination:
-            print(f"Reached end of a game after {self.iteration_for_game_count} steps in that game.")
+            print(f"Reached end of a game after {self.iteration_for_game_count} steps in that game and got reward of {obtained_reward}.")
+            print(f"Total of {self.game_count} games, average reward per game: {self.total_reward / self.game_count}, average reward per iteration: {self.total_reward / self.iteration_count}, total reward: {self.total_reward}")
             self.reset_environment()
-            print(f"Total of {self.game_count} games, average reward per game: {self.total_reward / self.game_count}")
             
             # End of game reached!
             return True
@@ -257,6 +262,21 @@ def main():
     for y in range(4):
         for x in range(4):
             print('%s\t\t' % numerical_action_to_string[argmax_random(agent.Q2[y*4 + x])], end='')
+        print()
+        
+
+    # Print the combined Q table
+    Qcombined = [[(q1 + q2)/2 for q1, q2 in zip(agent.Q1[state], agent.Q2[state])] for state in range(4*4)]
+    print("\n\n Final combined Q table (max values per state shown): \n")
+    for y in range(4):
+        for x in range(4):
+            print('%03.3f    \t' % max(Qcombined[y*4 + x]), end='')
+        print()
+        
+    print("\n\n Final combined Q table (best action per state): \n")
+    for y in range(4):
+        for x in range(4):
+            print('%s\t\t' % numerical_action_to_string[argmax_random(Qcombined[y*4 + x])], end='')
         print()
 
         
