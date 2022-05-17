@@ -2,6 +2,8 @@
 
 This readme file gives more information on the second assignment of the Reinforcement Learning (RL) course. It also includes the solution of Lennert Bontinck.
 
+**Note:** In case you don't have an appropriate MD reader, a HTML export of this file is also provided.
+
 ## Table of contents
 
 
