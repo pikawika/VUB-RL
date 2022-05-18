@@ -8,9 +8,11 @@ To make reproducing the RL homeworks and project easier, some documentation is p
   * [Table of contents](#table-of-contents)
   * [Contact information](#contact-information)
   * [Homework](#homework)
-    + [Setup Anaconda environment](#setup-anaconda-environment)
-    + [Import Anaconda environment](#import-anaconda-environment)
+    + [Setup Anaconda environment](#setup-anaconda-environment-1)
+    + [Import Anaconda environment](#import-anaconda-environment-1)
   * [Project](#project)
+    + [Setup Anaconda environment](#setup-anaconda-environment-2)
+    + [Import Anaconda environment](#import-anaconda-environment-2)
 
 <hr>
 
@@ -71,8 +73,8 @@ The anaconda Windows and MacOS environment is also exported to the YML files. Th
 # Navigate to the folder where the YML file is located
 cd VUB-RL/documentation/environments
 # Configure a new environment from the YML file
-## These were exported using: conda env export > rl-environment-{platform}.yml --no-builds
-conda env create -f rl-environment-{platform}.yml
+## These were exported using: conda env export > rl-homework-environment-{platform}.yml --no-builds
+conda env create -f rl-homework-environment-{platform}.yml
 ```
 
 <hr>
@@ -80,4 +82,54 @@ conda env create -f rl-environment-{platform}.yml
 
 ## Project
 
-TODO
+The RL project is based on a Python 3.8.10 Anaconda environment. To set up this environment, the below instructions can be followed or it can simply be important from the `yml` file. Note: as per the OpenAI Gym documentation Windows isn't officially supported.
+
+### Setup Anaconda environment
+
+- Install [the free version of Anaconda Navigator](https://www.anaconda.com/products/individual). V2.1.4 was used.
+- Using the `Anaconda Prompt (Anaconda3)` application, create and setup a new environment.
+
+  - **NOTE**: it might be required to run the prompt as administrator for all of the below steps.
+
+  - ```shell
+    # Create the rl-project Anaconda environment.
+    conda create -n rl-project python=3.8.10
+    
+    # Activates the previously created rl-project Anaconda environment.
+    conda activate rl-project
+    ```
+
+- Install some conda available packages on the environment
+
+  - ```shell
+    # Pandas is a famous Python Data Analysis Library and is used by a lot of other packages.
+    # The following command installs Pandas and its dependencies. V1.4.1 was used.
+    conda install pandas=1.4.1
+    
+    # We install pip to install packages not available from conda install. V21.2.2 was used.
+    conda install pip=21.2.2
+    ```
+  
+- Install some pip available packages on the environment
+
+  - ```shell
+    # Install Matplotlib for plotting purposes.
+    # V3.5.1 was used.
+    pip install matplotlib==3.5.1
+    
+    # Install Gym where we will make the connect four environment
+    pip install gym==0.23.1
+    ```
+
+### Import Anaconda environment
+
+The anaconda Windows and MacOS environment is also exported to the YML files. This means it can be imported using only a few lines of code rather then having to set it up yourself. These YML files are available in the [environments subfolder](environments/). You can load it in via the terminal as follows:
+
+
+```shell
+# Navigate to the folder where the YML file is located
+cd VUB-RL/documentation/environments
+# Configure a new environment from the YML file
+## These were exported using: conda env export > rl-project-environment-{platform}.yml --no-builds
+conda env create -f rl-project-environment-{platform}.yml
+```

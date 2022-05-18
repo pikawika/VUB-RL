@@ -1,0 +1,43 @@
+name: rl-project
+channels:
+  - defaults
+dependencies:
+  - blas=1.0
+  - bottleneck=1.3.4
+  - ca-certificates=2022.4.26
+  - certifi=2021.10.8
+  - intel-openmp=2021.4.0
+  - mkl=2021.4.0
+  - mkl-service=2.4.0
+  - mkl_fft=1.3.1
+  - mkl_random=1.2.2
+  - numexpr=2.8.1
+  - numpy=1.22.3
+  - numpy-base=1.22.3
+  - openssl=1.1.1o
+  - packaging=21.3
+  - pandas=1.4.1
+  - pip=21.2.2
+  - pyparsing=3.0.4
+  - python=3.8.10
+  - python-dateutil=2.8.2
+  - pytz=2021.3
+  - setuptools=61.2.0
+  - six=1.16.0
+  - sqlite=3.38.3
+  - vc=14.2
+  - vs2015_runtime=14.27.29016
+  - wheel=0.37.1
+  - wincertstore=0.2
+  - pip:
+    - cloudpickle==2.0.0
+    - cycler==0.11.0
+    - fonttools==4.33.3
+    - gym==0.23.1
+    - gym-notices==0.0.6
+    - importlib-metadata==4.11.3
+    - kiwisolver==1.4.2
+    - matplotlib==3.5.1
+    - pillow==9.1.1
+    - zipp==3.8.0
+prefix: C:\ProgramData\Anaconda3\envs\rl-project

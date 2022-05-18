@@ -43,6 +43,8 @@ The solutions for these homework assignments can be found here:
 
 ## Project
 
-The main purpose of the RL course is to become familiar with different RL techniques and be capable of making an RL project yourselves. For this, the final deliverable is a project that consists of a proposal.
+The main purpose of the RL course is to become familiar with different RL techniques and be capable of making an RL project yourselves. For this, the final deliverable is a project that fulfils a student made proposal.
+
+The PDF report of this project can be found [here](paper/Lennert_Bontinck_RL_project.pdf), the source code of this LaTeX document is [also available](paper/source).
 
 > View project specific information [here](project/)
