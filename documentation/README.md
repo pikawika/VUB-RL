@@ -103,10 +103,11 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
 
   - ```shell
     # Pandas is a famous Python Data Analysis Library and is used by a lot of other packages.
-    # The following command installs Pandas and its dependencies. V1.4.1 was used.
+    ## V1.4.1 was used.
     conda install pandas=1.4.1
     
-    # We install pip to install packages not available from conda install. V21.2.2 was used.
+    # We install pip to install packages not available from conda install.
+    ## V21.2.2 was used.
     conda install pip=21.2.2
     ```
   
@@ -117,8 +118,17 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
     # V3.5.1 was used.
     pip install matplotlib==3.5.1
     
+    # Install pygame used for creating connect four
+    # V2.1.2 was used.
+    pip install pygame==2.1.2
+    
     # Install Gym where we will make the connect four environment
+    # V0.23.1 was used.
     pip install gym==0.23.1
+    
+    # Install the IPython kernel for notebooks
+    # V6.13.0 was used.
+    pip install ipykernel==6.13.0
     ```
 
 ### Import Anaconda environment
