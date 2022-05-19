@@ -41,6 +41,26 @@ During the development of the project some experimental notebooks were created t
 
 
 
+<hr>
+
+
+## Base connect four pygame
+
+A basic implementation of a connect four game was made. This game was made using pygame and is adopted from [Nihar99](https://github.com/Nihar99/pygame) and [Solomonleo12345](https://github.com/solomonleo12345/ConnectFour-Game). This game can be played in dual player mode by executing the following commands. By default this will open the game graphically in a popup window and print the board to the terminal.
+
+
+```bash
+# Activate the conda environment
+conda activate rl-project
+
+# Go to the GitHub folder of this project
+cd path/to/GitHub/VUB-RL/project/base-connect4-pygame/
+
+# Start a Jupyter notebook server
+python connect_four.py
+```
+
+
 
 <hr>
 
