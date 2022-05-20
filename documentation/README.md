@@ -118,17 +118,27 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
     # V3.5.1 was used.
     pip install matplotlib==3.5.1
     
-    # Install pygame used for creating connect four
+    # Install pygame used for creating connect four.
     # V2.1.2 was used.
     pip install pygame==2.1.2
     
-    # Install Gym where we will make the connect four environment
+    # Install Gym where we will make the connect four environment.
     # V0.23.1 was used.
     pip install gym==0.23.1
     
-    # Install the IPython kernel for notebooks
+    # Install the IPython kernel for notebooks.
     # V6.13.0 was used.
     pip install ipykernel==6.13.0
+    
+    # Install Tianshou for simple provided models.
+    # V0.4.8 was used.
+    pip install tianshou==0.4.8
+    
+    # Upgrade your torch installation to support Cuda 11.6.
+    # NOTE: only do this if you have a Cuda 11.6 enabled card installed.
+    # NOTE 2: This is a nightly, non stable build!
+    # 1.12.0.dev20220520+cu116 was used
+    pip install --upgrade --no-deps --force-reinstall torch --pre --extra-index-url https://download.pytorch.org/whl/nightly/cu116
     ```
 
 ### Import Anaconda environment
