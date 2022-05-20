@@ -8,6 +8,8 @@
 # The edits and final used base game is provided on the GitHub of this project
 #   under the base_connect4_pygame folder
 # GitHub: https://github.com/pikawika/vub-rl
+#
+# This V1 is a straight forward translation from the pygame to a gym environment.
 
 ####################################################
 # INFO ABOUT THE AUTHOR
@@ -58,7 +60,7 @@ REWARD_MOVE = 0
 # MAIN ENVIRONMENT CLASS
 ####################################################
 
-class ConnectFourPygameEnv(gym.Env):
+class ConnectFourPygameEnvV1(gym.Env):
     """
     Main class for the Connect Four Gym environment which was adopted from a pygame.
     Supported render modes: "terminal", "human" | None defaults to terminal representation of board.
@@ -124,7 +126,7 @@ class ConnectFourPygameEnv(gym.Env):
         self.__visual_title = "P1s TURN"
         
         # Clean the canvas in pygame
-        if hasattr(self, '_ConnectFourPygameEnv__screen') and self.__screen is not None:
+        if hasattr(self, '_ConnectFourPygameEnvV1__screen') and self.__screen is not None:
             self._draw_background_board_to_canvas()
             
             # Update screen with created canvas
@@ -218,7 +220,7 @@ class ConnectFourPygameEnv(gym.Env):
             print(np.flip(self.__board, 0))
             return
         
-        if (not hasattr(self, '_ConnectFourPygameEnv__screen') and mode == "human") or (self.__screen is None and mode == "human"):
+        if (not hasattr(self, '_ConnectFourPygameEnvV1__screen') and mode == "human") or (self.__screen is None and mode == "human"):
             # First time using human mode, init the pygame
             pygame.init()
             pygame.display.init()
@@ -266,7 +268,7 @@ class ConnectFourPygameEnv(gym.Env):
         """
         Closes the environment to free resources
         """
-        if hasattr(self, '_ConnectFourPygameEnv__screen') and self.__screen is not None:
+        if hasattr(self, '_ConnectFourPygameEnvV1__screen') and self.__screen is not None:
             # human mode was used, clear the pygame env
             pygame.display.quit()
             pygame.quit()
