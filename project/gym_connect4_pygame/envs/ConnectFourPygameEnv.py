@@ -120,6 +120,9 @@ class ConnectFourPygameEnv(gym.Env):
         # Keep track if game is still playable
         self.__game_finished = False
         
+        # Title is that player 1 should play
+        self.__visual_title = "P1s TURN"
+        
         # Clean the canvas in pygame
         if hasattr(self, '_ConnectFourPygameEnv__screen') and self.__screen is not None:
             self._draw_background_board_to_canvas()
@@ -148,6 +151,9 @@ class ConnectFourPygameEnv(gym.Env):
         player_made_valid_move = self._place_piece_in_column(column= action)
         
         if not player_made_valid_move:
+            # Title is that player made wrong move
+            self.__visual_title = f"P{self.__current_players_coin} INVALID MOVE"
+            
             # Player made invalid move, return board as it was
             observation = self._get_obs()
             reward = REWARD_INVALID
@@ -157,6 +163,9 @@ class ConnectFourPygameEnv(gym.Env):
         
         # End game if player has won or give other oponent the turn
         if self._winning_board():
+            # Title is that player won
+            self.__visual_title = f"!!! P{self.__current_players_coin} WON !!!"
+            
             # Game is finished
             self.__game_finished = True
             
@@ -169,6 +178,9 @@ class ConnectFourPygameEnv(gym.Env):
         
         # End game if full board without winners - draw
         if self._full_board():
+            # Title is that there is a tie
+            self.__visual_title = "!!! TIE GAME !!!"
+            
             # Game is finished
             self.__game_finished = True
             
@@ -182,6 +194,9 @@ class ConnectFourPygameEnv(gym.Env):
         # Game continues and switches to next player
         self.__player_one_playing = not self.__player_one_playing
         self.__current_players_coin = GRID_PLAYER1_COIN if self.__player_one_playing else GRID_PLAYER2_COIN
+        
+        # Title is that it is the next player's turn
+        self.__visual_title = f"P{self.__current_players_coin}s turn"
             
         # No reward is given but board is updated
         observation = self._get_obs()
@@ -231,6 +246,9 @@ class ConnectFourPygameEnv(gym.Env):
         if mode == "human":
             # Asumes background already drawn, update by showing coins
             self._draw_move_to_canvas()
+            
+            # Draws title to canvas
+            self._draw_title_to_canvas()
             
             # Update screen with created canvas
             self.__screen.blit(self.__canvas, self.__canvas.get_rect())
@@ -417,18 +435,21 @@ class ConnectFourPygameEnv(gym.Env):
                                        self.__visual_coin_radius)
         
         
-    def update_title_text(self, title: str, color):
+    def _draw_title_to_canvas(self):
         """
         Updates the title string to a given string.
         """
         # create the black rectangle on the top of the screen
-        pygame.draw.rect(self.__screen, COLOR_BLACK, (0, 0, self.__visual_width, self.__visual_square_size))
+        pygame.draw.rect(self.__canvas, COLOR_BLACK, (0, 0, self.__visual_width, self.__visual_square_size))
         
+        # Determine the color of the text
+        color = COLOR_RED if self.__player_one_playing else COLOR_YELLOW
+            
         # render the font to a label
-        label = self.__visual_font.render(title, True, color)
+        label = self.__visual_font.render(self.__visual_title, True, color)
 
         # print the label on the screen
-        self.__screen.blit(label, (10, 10))
+        self.__canvas.blit(label, (10, 10))
     
 
 
