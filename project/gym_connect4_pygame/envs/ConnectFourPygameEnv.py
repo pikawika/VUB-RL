@@ -26,6 +26,9 @@ import gym
 # Allow for optionals
 from typing import Optional
 
+# Pygame may be used for visualisation reasons
+import pygame
+
 # Numpy for easy numerical data structures
 import numpy as np
 
@@ -58,10 +61,11 @@ REWARD_MOVE = 0
 class ConnectFourPygameEnv(gym.Env):
     """
     Main class for the Connect Four Gym environment which was adopted from a pygame.
-    Supported render modes: "terminal" | None defaults to terminal representation of board.
+    Supported render modes: "terminal", "human" | None defaults to terminal representation of board.
     """
     metadata = {
-        "render_modes": ["terminal"], # Supported render modes for visualisation
+        "render_modes": ["terminal", "human"], # Supported render modes for visualisation
+        "render_fps": 10
         } 
     
     def __init__(self, render_mode: Optional[str] = None,  grid_column_count: int = 7, grid_row_count: int = 6):
@@ -115,6 +119,14 @@ class ConnectFourPygameEnv(gym.Env):
     
         # Keep track if game is still playable
         self.__game_finished = False
+        
+        # Clean the canvas in pygame
+        if hasattr(self, '_ConnectFourPygameEnv__screen') and self.__screen is not None:
+            self._draw_background_board_to_canvas()
+            
+            # Update screen with created canvas
+            self.__screen.blit(self.__canvas, self.__canvas.get_rect())
+            pygame.display.flip()
         
         # Get observation and info for initial board and return it 
         observation = self._get_obs()
@@ -184,25 +196,71 @@ class ConnectFourPygameEnv(gym.Env):
         Defaults to "terminal" render.
         """
         if mode not in self.metadata["render_modes"]:
-            raise NotImplementedError(f"Unknown render option, choose from: {self.metadata['render_modes']}")
+            raise NotImplementedError(f"test: Unknown render option, choose from: {self.metadata['render_modes']}")
         
         if mode == "terminal":
             # Print to the terminal
             print(np.flip(self.__board, 0))
+            return
+        
+        if (not hasattr(self, '_ConnectFourPygameEnv__screen') and mode == "human") or (self.__screen is None and mode == "human"):
+            # First time using human mode, init the pygame
+            pygame.init()
+            pygame.display.init()
+            
+            # Setup visual variables
+            self.__visual_square_size = 100
+            self.__visual_width= self.grid_column_count * self.__visual_square_size
+            self.__visual_height = (self.grid_row_count + 1) * self.__visual_square_size # +1 for text banner
+            self.__visual_screen_size = (self.__visual_width, self.__visual_height)
+            self.__visual_coin_radius = int(self.__visual_square_size / 2 - 5)
+            self.__visual_font = pygame.font.SysFont("monospace", 75)
+            
+            # Setup clock
+            self.clock = pygame.time.Clock()
+            
+            # Setup the screen
+            self.__screen = pygame.display.set_mode(self.__visual_screen_size)
+            
+            # Configure the canvas for hte screen
+            self.__canvas = pygame.Surface(self.__visual_screen_size)
+            
+            # Render the background
+            self._draw_background_board_to_canvas()
+        
+        if mode == "human":
+            # Asumes background already drawn, update by showing coins
+            self._draw_move_to_canvas()
+            
+            # Update screen with created canvas
+            self.__screen.blit(self.__canvas, self.__canvas.get_rect())
+            pygame.event.pump()
+            pygame.display.update()
+            
+            # Take into account FPS
+            self.clock.tick(self.metadata["render_fps"])
+            
+            
+        
+        
     
     def close(self):
         """
         Closes the environment to free resources
         """
-        # TODO
-        temp = "todo"
+        if hasattr(self, '_ConnectFourPygameEnv__screen') and self.__screen is not None:
+            # human mode was used, clear the pygame env
+            pygame.display.quit()
+            pygame.quit()
+            self.__screen = None
+            self.clock = None
         
         
         
         
             
     ####################################################
-    # HELPER FUNCTIONS
+    # HELPER FUNCTIONS FOR GAME LOGIC
     ####################################################
     # Functions adopted from base pygame
     
@@ -296,6 +354,81 @@ class ConnectFourPygameEnv(gym.Env):
             
         # No valid locations found, board full
         return True
+        
+        
+        
+        
+            
+    ####################################################
+    # HELPER FUNCTIONS FOR VISUALISATION
+    ####################################################
+    # Functions adopted from base pygame
+    
+    def _draw_background_board_to_canvas(self):
+        """
+        Draws the board to the screen/pygame window.
+        """
+        # Check if pygame screen is available
+        if self.__screen == None or self.__canvas == None:
+            raise Exception("Working with pygame screen and canvas but None is configured.")
+        
+        # Fill with black (background color)
+        self.__canvas.fill(COLOR_BLACK)
+        
+        # Draw the background
+        for column in range(self.grid_column_count):
+            for row in range(self.grid_row_count):
+                # Draw a blue rectangle, e.g. the board
+                pygame.draw.rect(self.__canvas, COLOR_BLUE, (column * self.__visual_square_size,
+                                                             row * self.__visual_square_size + self.__visual_square_size, self.__visual_square_size, self.__visual_square_size))
+
+                # Draw empty space if that space is empty
+                pygame.draw.circle(self.__canvas, COLOR_BLACK, (int(column * self.__visual_square_size + self.__visual_square_size / 2),
+                                                                int(row * self.__visual_square_size + self.__visual_square_size + self.__visual_square_size / 2)),
+                                   self.__visual_coin_radius)
+        
+        # create the black rectangle on the top of the screen
+        pygame.draw.rect(self.__canvas, COLOR_BLACK, (0, 0, self.__visual_width, self.__visual_square_size))
+        
+    def _draw_move_to_canvas(self):
+        """
+        Draws a new player move on the screen.
+        Updats only what is needed to save time and memory.
+        """     
+        # Check if pygame screen is available
+        if self.__screen == None or self.__canvas == None:
+            raise Exception("Working with pygame screen and canvas but None is configured.")
+        # Draw the player coins, needs to happen in seperate loop
+        for column in range(self.grid_column_count):
+            for row in range(self.grid_row_count):
+                # Draw a red circle for player 1's coins
+                
+                if self.__board[row][column] == GRID_PLAYER1_COIN:
+                    pygame.draw.circle(self.__canvas, COLOR_RED, (int(column * self.__visual_square_size + self.__visual_square_size / 2),
+                                                                  self.__visual_height - int(row * self.__visual_square_size + self.__visual_square_size / 2)),
+                                       self.__visual_coin_radius)
+                    
+                
+                
+                # Draw a yellow circle for player 2's coins
+                elif self.__board[row][column] == GRID_PLAYER2_COIN:
+                    pygame.draw.circle(self.__canvas, COLOR_YELLOW, (int(column * self.__visual_square_size + self.__visual_square_size / 2),
+                                                                     self.__visual_height - int(row * self.__visual_square_size + self.__visual_square_size / 2)),
+                                       self.__visual_coin_radius)
+        
+        
+    def update_title_text(self, title: str, color):
+        """
+        Updates the title string to a given string.
+        """
+        # create the black rectangle on the top of the screen
+        pygame.draw.rect(self.__screen, COLOR_BLACK, (0, 0, self.__visual_width, self.__visual_square_size))
+        
+        # render the font to a label
+        label = self.__visual_font.render(title, True, color)
+
+        # print the label on the screen
+        self.__screen.blit(label, (10, 10))
     
 
 
