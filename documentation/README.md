@@ -139,6 +139,10 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
     # NOTE 2: This is a nightly, non stable build!
     # 1.12.0.dev20220520+cu116 was used
     pip install --upgrade --no-deps --force-reinstall torch --pre --extra-index-url https://download.pytorch.org/whl/nightly/cu116
+    
+    # PettingZoo is needed as it is often used as reference multi agent implementation.
+    # V1.18.1 was used.
+    pip install PettingZoo==1.18.1
     ```
 
 ### Import Anaconda environment

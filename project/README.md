@@ -43,6 +43,15 @@ During the development of the project some experimental notebooks were created t
 | 1: Testing Gym installation | Available [here](experimental-notebooks/1-testing-gym-installation.ipynb) |
 
 
+## Paper specific notebooks
+
+For the paper of the project, multiple experiments were performed. The notebooks for these experiments are made available.
+
+| **Title**                                        | **File location**                                            |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| 1: Connect four with random agents from Tianshou | Available [here](paper_notebooks/1-learning-connect-four-random-agent-tianshou.ipynb) |
+
+
 
 <hr>
 

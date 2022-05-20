@@ -36,6 +36,11 @@ import pygame
 # Numpy for easy numerical data structures
 import numpy as np
 
+# Use pettingzoo for generalised multi agent
+from pettingzoo import AECEnv
+from pettingzoo.utils import wrappers
+from pettingzoo.utils.agent_selector import agent_selector
+
 ####################################################
 # GLOBAL VARIABLES
 ####################################################
@@ -59,20 +64,50 @@ REWARD_INVALID = -1
 REWARD_MOVE = 0
 
 ####################################################
+# GLOBAL FUNCTIONS FOR PETTING ZOO COMPATIBILITY
+####################################################
+
+def env():
+    """
+    Returns the environment with all it's wrappers.
+    """
+    env = raw_env()
+    env = wrappers.TerminateIllegalWrapper(env, illegal_reward=REWARD_INVALID)
+    env = wrappers.AssertOutOfBoundsWrapper(env)
+    env = wrappers.OrderEnforcingWrapper(env)
+    return env
+
+def get_image(path):
+    from os import path as os_path
+
+    import pygame
+
+    cwd = os_path.dirname(__file__)
+    image = pygame.image.load(cwd + "/" + path)
+    sfc = pygame.Surface(image.get_size(), flags=pygame.SRCALPHA)
+    sfc.blit(image, (0, 0))
+    return sfc
+
+####################################################
 # MAIN ENVIRONMENT CLASS
 ####################################################
 
-class ConnectFourPygameEnvV2(gym.Env):
+class raw_env(AECEnv):
     """
     Main class for the Connect Four Gym environment which was adopted from a pygame.
     Supported render modes: "terminal", "human" | None defaults to terminal representation of board.
     """
     metadata = {
         "render_modes": ["terminal", "human"], # Supported render modes for visualisation
-        "render_fps": 10
+        "render_fps": 10,
+        "is_parallelizable": False, # NOTE: edited for V2
         } 
     
     def __init__(self, render_mode: Optional[str] = None,  grid_column_count: int = 7, grid_row_count: int = 6):
+        # Init from super which is a Petting Zoo class
+        # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention        
+        super().__init__()
+        
         # Ensure that a correct render mode is supplied
         assert render_mode is None or render_mode in self.metadata["render_modes"]
 
@@ -81,27 +116,44 @@ class ConnectFourPygameEnvV2(gym.Env):
         self.grid_row_count = grid_row_count
         
         # Our game allows for two agents to play
-        # NOTE: V2 edits w.r.t. PettingZoo and Tianshoud multi-agent coding convention
-        self.agents = ["player_0", "player_1"]
+        # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention
+        self.agents = ["player_1", "player_2"]
+        self.possible_agents = self.agents[:]
 
         # The observation by an agent is the encoded form of a board with 3 possible int values (0= empty, 1=p1, 2=p2)
-        self.observation_space = gym.spaces.Dict(
-            {"board": gym.spaces.Box(
-                low = 0,
-                high = 2,
-                shape = (self.grid_row_count, self.grid_column_count),
-                dtype = np.int32)
-             })
+        # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention
+        self.observation_spaces = {
+            i: gym.spaces.Dict(
+                {
+                    "observation": gym.spaces.Box(
+                        low=0,
+                        high=2,
+                        shape=((self.grid_row_count, self.grid_column_count)),
+                        dtype=np.int8
+                        ),
+                    "action_mask": gym.spaces.Box(
+                        low=0,
+                        high=1,
+                        shape=(self.grid_column_count,),
+                        dtype=np.int8),
+                }
+            )
+            for i in self.agents
+        }
 
         # The agents actions are in esence the possibility of placing a coin in each column
-        self.action_space = gym.spaces.Discrete(self.grid_column_count)
+        # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention
+        self.action_spaces = {i: gym.spaces.Discrete(self.grid_column_count) for i in self.agents}
 
     def _get_obs(self):
         """
         Private function to get the observtions in the specified format.
+        Our action mask always allows all columns as it should be learned that wrong pieces results in remaing the same agent.
         """
+        # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention
         return {
-            "board": self.__board
+            "observation": self.__board,
+            "action_mask": [1 for column in range(self.grid_column_count)]
             }
 
     def _get_info(self):
@@ -112,7 +164,7 @@ class ConnectFourPygameEnvV2(gym.Env):
             "current_player": self.__current_players_coin
             }
         
-    def reset(self, return_info=False):
+    def reset(self, seed=None, options=None):
         """
         Resets the environment to an empty board.
         It is assumed reset is called before a first step call as per the Gym documentation.
@@ -122,7 +174,7 @@ class ConnectFourPygameEnvV2(gym.Env):
         self.__board = self._empty_board()
         
         # Keep track of who's turn it is
-        self.__player_one_playing = True  
+        self.__player_one_playing = True
         self.__current_players_coin = GRID_PLAYER1_COIN if self.__player_one_playing else GRID_PLAYER2_COIN
     
         # Keep track if game is still playable
@@ -132,17 +184,24 @@ class ConnectFourPygameEnvV2(gym.Env):
         self.__visual_title = "P1s TURN"
         
         # Clean the canvas in pygame
-        if hasattr(self, '_ConnectFourPygameEnvV2__screen') and self.__screen is not None:
+        if hasattr(self, '_raw_env__screen') and self.__screen is not None:
             self._draw_background_board_to_canvas()
             
             # Update screen with created canvas
             self.__screen.blit(self.__canvas, self.__canvas.get_rect())
             pygame.display.flip()
+    
+        # Reset Petting Zoo vars
+        # NOTE: V2 updates
+        self.agents = self.possible_agents[:]
         
-        # Get observation and info for initial board and return it 
-        observation = self._get_obs()
-        info = self._get_info()
-        return (observation, info) if return_info else observation
+        self.rewards = {i: 0 for i in self.agents}
+        self._cumulative_rewards = {name: 0 for name in self.agents}
+        self.dones = {i: False for i in self.agents}
+        self.infos = {i: {} for i in self.agents}
+         
+        self._agent_selector = agent_selector(self.agents)
+        self.agent_selection = self._agent_selector.reset()
     
     def step(self, action: int):
         """
@@ -155,6 +214,15 @@ class ConnectFourPygameEnvV2(gym.Env):
             - Move leading to draw: +5
         """
 
+        # If the game was done, let it know using parent function
+        # NOTE: edit for V2
+        if self.dones[self.agent_selection]:
+            return self._was_done_step(action)
+        
+        # Update agent selection
+        # NOTE: edit for v2 to be Petting Zoo like
+        next_agent = self._agent_selector.next()
+        
         # Try to place the peace
         player_made_valid_move = self._place_piece_in_column(column= action)
         
@@ -162,30 +230,26 @@ class ConnectFourPygameEnvV2(gym.Env):
             # Title is that player made wrong move
             self.__visual_title = f"P{self.__current_players_coin} INVALID MOVE"
             
-            # Player made invalid move, return board as it was
-            observation = self._get_obs()
-            reward = REWARD_INVALID
-            done = self.__game_finished
-            info = self._get_info()
-            return observation, reward, done, info
+            # Board stays as it was, current agent gets negative reward, other no reward
+            self.rewards[self.agent_selection] += REWARD_INVALID
+            self.rewards[next_agent] += 0
+            return
         
         # End game if player has won or give other oponent the turn
-        if self._winning_board():
+        elif self._winning_board():
             # Title is that player won
             self.__visual_title = f"!!! P{self.__current_players_coin} WON !!!"
             
             # Game is finished
             self.__game_finished = True
             
-            # Player made winning move, return winning board and done
-            observation = self._get_obs()
-            reward = REWARD_WIN
-            done = self.__game_finished
-            info = self._get_info()
-            return observation, reward, done, info
+            self.rewards[self.agent_selection] += REWARD_WIN
+            self.rewards[next_agent] += REWARD_LOSS
+            self.dones = {i: True for i in self.agents}
+            return
         
         # End game if full board without winners - draw
-        if self._full_board():
+        elif self._full_board():
             # Title is that there is a tie
             self.__visual_title = "!!! TIE GAME !!!"
             
@@ -193,25 +257,25 @@ class ConnectFourPygameEnvV2(gym.Env):
             self.__game_finished = True
             
             # Player made winning move, return winning board and done
-            observation = self._get_obs()
-            reward = REWARD_DRAW
-            done = self.__game_finished
-            info = self._get_info()
-            return observation, reward, done, info
+            self.rewards[self.agent_selection] += REWARD_DRAW
+            self.rewards[next_agent] += REWARD_DRAW
+            self.dones = {i: True for i in self.agents}
+            return
         
-        # Game continues and switches to next player
-        self.__player_one_playing = not self.__player_one_playing
-        self.__current_players_coin = GRID_PLAYER1_COIN if self.__player_one_playing else GRID_PLAYER2_COIN
-        
-        # Title is that it is the next player's turn
-        self.__visual_title = f"P{self.__current_players_coin}s turn"
+        else:
+            # Game continues and switches to next player
+            self.__player_one_playing = not self.__player_one_playing
+            self.__current_players_coin = GRID_PLAYER1_COIN if self.__player_one_playing else GRID_PLAYER2_COIN
             
-        # No reward is given but board is updated
-        observation = self._get_obs()
-        reward = REWARD_MOVE
-        done = self.__game_finished
-        info = self._get_info()
-        return observation, reward, done, info
+            # Update agent selection
+            # NOTE: edit for v2 to be Petting Zoo like
+            self.agent_selection = next_agent
+            
+            # Title is that it is the next player's turn
+            self.__visual_title = f"P{self.__current_players_coin}s turn"
+            
+        # Accumelate the rewards
+        self._accumulate_rewards()
     
     def render(self, mode='terminal'):
         """
@@ -226,7 +290,7 @@ class ConnectFourPygameEnvV2(gym.Env):
             print(np.flip(self.__board, 0))
             return
         
-        if (not hasattr(self, '_ConnectFourPygameEnvV2__screen') and mode == "human") or (self.__screen is None and mode == "human"):
+        if (not hasattr(self, '_raw_env__screen') and mode == "human") or (self.__screen is None and mode == "human"):
             # First time using human mode, init the pygame
             pygame.init()
             pygame.display.init()
@@ -274,7 +338,7 @@ class ConnectFourPygameEnvV2(gym.Env):
         """
         Closes the environment to free resources
         """
-        if hasattr(self, '_ConnectFourPygameEnvV2__screen') and self.__screen is not None:
+        if hasattr(self, '_raw_env__screen') and self.__screen is not None:
             # human mode was used, clear the pygame env
             pygame.display.quit()
             pygame.quit()
@@ -283,6 +347,36 @@ class ConnectFourPygameEnvV2(gym.Env):
         
         
         
+        
+            
+    ####################################################
+    # V2 ADDITIONS
+    ####################################################
+    # Functions added for V2
+    
+    def observation_space(self, agent):
+        """
+        Returns the observation space of a specified agent.
+        """
+        return self.observation_spaces[agent]
+
+    def action_space(self, agent):
+        """
+        Returns the action space of a specified agent.
+        """
+        return self.action_spaces[agent]
+    
+    def observe(self, agent):
+        """
+        Returns the observation space.
+        """
+        return self._get_obs()
+    
+    def _legal_moves(self):
+        """
+        Returns the legal moves, which are all columns
+        """
+        return [i for i in range(self.grid_column_count)]
         
             
     ####################################################
