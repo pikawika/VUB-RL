@@ -4,11 +4,14 @@ This readme goes over the files and documents available for the RL project by Le
 
 ## Table of contents
 
-- [Reinforcement Learning Project @ VUB 2021 - 2022](#reinforcement-learning-project---vub-2021---2022)
-  * [Table of contents](#table-of-contents)
-  * [Contact information](#contact-information)
-  * [Setting up the correct Anaconda environment](#setting-up-the-correct-anaconda-environment)
-  * [Running the code](#running-the-code)
+- [Reinforcement Learning Project @ VUB 2021 - 2022](#reinforcement-learning-project--vub-2021---2022)
+  - [Table of contents](#table-of-contents)
+  - [Contact information](#contact-information)
+  - [Setting up the correct Anaconda environment](#setting-up-the-correct-anaconda-environment)
+  - [Experimental  notebooks](#experimental--notebooks)
+  - [Base connect four pygame](#base-connect-four-pygame)
+  - [Custom gym environment](#custom-gym-environment)
+  - [Running the code](#running-the-code)
 
 <hr>
 
@@ -54,11 +57,20 @@ A basic implementation of a connect four game was made. This game was made using
 conda activate rl-project
 
 # Go to the GitHub folder of this project
-cd path/to/GitHub/VUB-RL/project/base-connect4-pygame/
+cd path/to/GitHub/VUB-RL/project/base_connect4_pygame/
 
 # Start a Jupyter notebook server
 python connect_four.py
 ```
+
+
+
+<hr>
+
+
+## Custom gym environment
+
+For the creation of the custom Gym environment, the [Gym documentation](https://www.gymlibrary.ml/content/environment_creation/) was used together with the supplied [Gym Examples GitHub repo](https://github.com/Farama-Foundation/gym-examples). To gain better insight on our connect four specific environment, comparable projects were studied such as those by [Andrei Suiu et al](https://github.com/IASIAI/gym-connect-four), [David Cotton](https://github.com/davidcotton/gym-connect4) and [Daniel Hernandez](https://github.com/Danielhp95/gym-connect4).
 
 
 
