@@ -49,7 +49,7 @@ For the paper of the project, multiple experiments were performed. The notebooks
 
 | **Title**                                        | **File location**                                            |
 | ------------------------------------------------ | ------------------------------------------------------------ |
-| 1: Connect four with random agents from Tianshou | Available [here](paper_notebooks/1-learning-connect-four-random-agent-tianshou.ipynb) |
+| 1: Connect four with random agents from Tianshou | Available [here](paper_notebooks/1-learning-connect-four-random-agents-tianshou.ipynb) |
 
 
 
