@@ -126,9 +126,10 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
     # V0.23.1 was used.
     pip install gym==0.23.1
     
-    # Install the IPython kernel for notebooks.
-    # V6.13.0 was used.
+    # Install the IPython kernel and notebook for jupyter notebooks.
+    # V6.13.0 was used for the ipykernel and V6.4.11 for notebook was used.
     pip install ipykernel==6.13.0
+    pip install notebook==6.4.11
     
     # Install Tianshou for simple provided models.
     # V0.4.8 was used.
