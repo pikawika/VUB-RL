@@ -9,6 +9,7 @@ This readme goes over the files and documents available for the RL project by Le
   - [Contact information](#contact-information)
   - [Setting up the correct Anaconda environment](#setting-up-the-correct-anaconda-environment)
   - [Experimental  notebooks](#experimental--notebooks)
+  - [Paper specific notebooks](#paper-specific-notebooks)
   - [Base connect four pygame](#base-connect-four-pygame)
   - [Custom gym environment](#custom-gym-environment)
   - [Running the code](#running-the-code)
@@ -42,14 +43,17 @@ During the development of the project some experimental notebooks were created t
 | --------------------------- | ------------------------------------------------------------ |
 | 1: Testing Gym installation | Available [here](experimental-notebooks/1-testing-gym-installation.ipynb) |
 
+<hr>
+
 
 ## Paper specific notebooks
 
 For the paper of the project, multiple experiments were performed. The notebooks for these experiments are made available.
 
-| **Title**                                        | **File location**                                            |
-| ------------------------------------------------ | ------------------------------------------------------------ |
-| 1: Connect four with random agents from Tianshou | Available [here](paper_notebooks/1-learning-connect-four-random-agents-tianshou.ipynb) |
+| **Title**                                                | **File location**                                            |
+| -------------------------------------------------------- | ------------------------------------------------------------ |
+| 1: Connect four with random agents from Tianshou         | Available [here](paper_notebooks/1-learning-connect-four-random-agents-tianshou.ipynb) |
+| 2: Connect four with Deep Q-Network agents from Tianshou | Available [here](paper_notebooks/2-learning-connect-four-dqn-agents-tianshou.ipynb) |
 
 
 
