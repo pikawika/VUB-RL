@@ -67,11 +67,21 @@ REWARD_MOVE = 0
 # GLOBAL FUNCTIONS FOR PETTING ZOO COMPATIBILITY
 ####################################################
 
-def env():
+def env(reward_win: int = REWARD_WIN,
+        reward_loss: int = REWARD_LOSS,
+        reward_draw: int = REWARD_DRAW,
+        reward_invalid: int = REWARD_INVALID,
+        reward_move: int = REWARD_MOVE
+        ):
     """
     Returns the environment with all it's wrappers.
     """
-    env = raw_env()
+    
+    env = raw_env(reward_win= reward_win,
+                  reward_loss= reward_loss,
+                  reward_draw= reward_draw,
+                  reward_invalid= reward_invalid,
+                  reward_move= reward_move)
     env = wrappers.TerminateIllegalWrapper(env, illegal_reward=REWARD_INVALID)
     env = wrappers.AssertOutOfBoundsWrapper(env)
     env = wrappers.OrderEnforcingWrapper(env)
@@ -103,7 +113,15 @@ class raw_env(AECEnv):
         "is_parallelizable": False, # NOTE: edited for V2
         } 
     
-    def __init__(self, render_mode: Optional[str] = None,  grid_column_count: int = 7, grid_row_count: int = 6):
+    def __init__(self,
+                 render_mode: Optional[str] = None,
+                 grid_column_count: int = 7,
+                 grid_row_count: int = 6,
+                 reward_win: int = REWARD_WIN,
+                 reward_loss: int = REWARD_LOSS,
+                 reward_draw: int = REWARD_DRAW,
+                 reward_invalid: int = REWARD_INVALID,
+                 reward_move: int = 0):
         # Init from super which is a Petting Zoo class
         # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention        
         super().__init__()
@@ -114,6 +132,11 @@ class raw_env(AECEnv):
         # Store game specific settings
         self.grid_column_count = grid_column_count 
         self.grid_row_count = grid_row_count
+        self.reward_win = reward_win
+        self.reward_loss = reward_loss
+        self.reward_draw = reward_draw
+        self.reward_invalid = reward_invalid
+        self.reward_move = reward_move
         
         # Our game allows for two agents to play
         # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention
@@ -231,7 +254,7 @@ class raw_env(AECEnv):
             self.__visual_title = f"P{self.__current_players_coin} INVALID MOVE"
             
             # Board stays as it was, current agent gets negative reward, other no reward
-            self.rewards[self.agent_selection] += REWARD_INVALID
+            self.rewards[self.agent_selection] += self.reward_invalid
             self.rewards[next_agent] += 0
             return
         
@@ -243,8 +266,8 @@ class raw_env(AECEnv):
             # Game is finished
             self.__game_finished = True
             
-            self.rewards[self.agent_selection] += REWARD_WIN
-            self.rewards[next_agent] += REWARD_LOSS
+            self.rewards[self.agent_selection] += self.reward_win
+            self.rewards[next_agent] += self.reward_loss
             self.dones = {i: True for i in self.agents}
             return
         
@@ -257,12 +280,16 @@ class raw_env(AECEnv):
             self.__game_finished = True
             
             # Player made winning move, return winning board and done
-            self.rewards[self.agent_selection] += REWARD_DRAW
-            self.rewards[next_agent] += REWARD_DRAW
+            self.rewards[self.agent_selection] += self.reward_draw
+            self.rewards[next_agent] += self.reward_draw
             self.dones = {i: True for i in self.agents}
             return
         
         else:
+            # Reward for doing a move
+            self.rewards[self.agent_selection] += self.reward_move
+            self.rewards[next_agent] += self.reward_move
+            
             # Game continues and switches to next player
             self.__player_one_playing = not self.__player_one_playing
             self.__current_players_coin = GRID_PLAYER1_COIN if self.__player_one_playing else GRID_PLAYER2_COIN
