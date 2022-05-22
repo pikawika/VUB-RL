@@ -50,10 +50,10 @@ During the development of the project some experimental notebooks were created t
 
 For the paper of the project, multiple experiments were performed. The notebooks for these experiments are made available.
 
-| **Title**                                                | **File location**                                            |
-| -------------------------------------------------------- | ------------------------------------------------------------ |
-| 1: Connect four with random agents from Tianshou         | Available [here](paper_notebooks/1-learning-connect-four-random-agents-tianshou.ipynb) |
-| 2: Connect four with Deep Q-Network agents from Tianshou | Available [here](paper_notebooks/2-learning-connect-four-dqn-agents-tianshou.ipynb) |
+| **Title**                                                    | **File location**                                            |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 1: Connect four with random agents from Tianshou             | Available [here](paper_notebooks/1-learning-connect-four-random-agents-tianshou.ipynb) |
+| 2: Connect four with Deep Q-Network vs Random agent from Tianshou | Available [here](paper_notebooks/2-learning-connect-four-dqn-vs-random-agent-tianshou.ipynb) |
 
 
 
