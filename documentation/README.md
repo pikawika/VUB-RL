@@ -123,8 +123,11 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
     pip install pygame==2.1.2
     
     # Install Gym where we will make the connect four environment.
-    # V0.23.1 was used.
-    pip install gym==0.23.1
+    # V0.21.0 was used for compatibility with RLlib.
+    pip install gym==0.21.0
+    
+    # Pyglet is needed for some Gym environments
+    pip install pyglet==1.5.26
     
     # Install the IPython kernel and notebook for jupyter notebooks.
     # V6.13.0 was used for the ipykernel and V6.4.11 for notebook was used.
@@ -134,6 +137,10 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
     # Install Tianshou for simple provided models.
     # V0.4.8 was used.
     pip install tianshou==0.4.8
+    
+    # Install Tianshou for more RL models.
+    # V0.4.8 was used.
+    pip install "ray[rllib]"==1.12.1	
     
     # Upgrade your torch installation to support Cuda 11.6.
     # NOTE: only do this if you have a Cuda 11.6 enabled card installed.
