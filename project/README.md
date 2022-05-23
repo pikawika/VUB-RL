@@ -39,9 +39,11 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
 
 During the development of the project some experimental notebooks were created to gain further insight on the Gym environment or performance of some algorithms on classical Gym environments.
 
-| **Title**                   | **File location**                                            |
-| --------------------------- | ------------------------------------------------------------ |
-| 1: Testing Gym installation | Available [here](experimental-notebooks/1-testing-gym-installation.ipynb) |
+| **Title**                               | **File location**                                            |
+| --------------------------------------- | ------------------------------------------------------------ |
+| 1: Testing Gym installation             | Available [here](experimental-notebooks/1-testing-gym-installation.ipynb) |
+| 2: Testing custom Gym environment       | Available [here](experimental-notebooks/2-testing-custom-gym-environment.ipynb) |
+| 3: Petting Zoo connect four environment | Available [here](experimental-notebooks/3-pettingzoo-connectfour.ipynb) |
 
 <hr>
 
