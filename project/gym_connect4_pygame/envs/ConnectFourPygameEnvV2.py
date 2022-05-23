@@ -71,7 +71,8 @@ def env(reward_win: int = REWARD_WIN,
         reward_loss: int = REWARD_LOSS,
         reward_draw: int = REWARD_DRAW,
         reward_invalid: int = REWARD_INVALID,
-        reward_move: int = REWARD_MOVE
+        reward_move: int = REWARD_MOVE,
+        allow_invalid_move: bool = True
         ):
     """
     Returns the environment with all it's wrappers.
@@ -81,7 +82,8 @@ def env(reward_win: int = REWARD_WIN,
                   reward_loss= reward_loss,
                   reward_draw= reward_draw,
                   reward_invalid= reward_invalid,
-                  reward_move= reward_move)
+                  reward_move= reward_move,
+                  allow_invalid_move = allow_invalid_move)
     env = wrappers.TerminateIllegalWrapper(env, illegal_reward=REWARD_INVALID)
     env = wrappers.AssertOutOfBoundsWrapper(env)
     env = wrappers.OrderEnforcingWrapper(env)
@@ -121,7 +123,8 @@ class raw_env(AECEnv):
                  reward_loss: int = REWARD_LOSS,
                  reward_draw: int = REWARD_DRAW,
                  reward_invalid: int = REWARD_INVALID,
-                 reward_move: int = 0):
+                 reward_move: int = 0,
+                 allow_invalid_move: bool = True):
         # Init from super which is a Petting Zoo class
         # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention        
         super().__init__()
@@ -137,6 +140,7 @@ class raw_env(AECEnv):
         self.reward_draw = reward_draw
         self.reward_invalid = reward_invalid
         self.reward_move = reward_move
+        self.allow_invalid_move = allow_invalid_move
         
         # Our game allows for two agents to play
         # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention
@@ -174,10 +178,17 @@ class raw_env(AECEnv):
         Our action mask always allows all columns as it should be learned that wrong pieces results in remaing the same agent.
         """
         # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention
-        return {
-            "observation": self.__board,
-            "action_mask": [1 for column in range(self.grid_column_count)]
-            }
+        if self.allow_invalid_move:
+            return {
+                "observation": self.__board,
+                "action_mask": [1 for column in range(self.grid_column_count)]
+                }
+        else:
+            return {
+                "observation": self.__board,
+                "action_mask": [self._is_valid_location(column) for column in range(self.grid_column_count)]
+                }
+            
 
     def _get_info(self):
         """
