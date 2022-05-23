@@ -58,6 +58,7 @@ For the paper of the project, multiple experiments were performed. The notebooks
 | 2: Connect four with Deep Q-Network vs Random agent from Tianshou | Available [here](paper_notebooks/2-learning-connect-four-dqn-vs-random-agent-tianshou.ipynb) |
 | 3: Connect four with two Deep Q-Network agents from Tianshou | Available [here](paper_notebooks/3-learning-connect-four-dqn-agents-tianshou.ipynb) |
 | 4: Improving DQN agents in connect four                      | Available [here](paper_notebooks/4-improving-dqn-agents.ipynb) |
+| 5: Improving DQN architecture                                | Available [here](paper_notebooks/5-improving-dqn-architecture.ipynb) |
 
 
 
