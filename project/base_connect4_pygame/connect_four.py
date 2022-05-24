@@ -18,7 +18,6 @@
 ####################################################
 
 import string
-from tkinter.tix import COLUMN
 import numpy as np
 import pygame
 import sys

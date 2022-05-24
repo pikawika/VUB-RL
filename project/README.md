@@ -12,7 +12,7 @@ This readme goes over the files and documents available for the RL project by Le
   - [Paper specific notebooks](#paper-specific-notebooks)
   - [Base connect four pygame](#base-connect-four-pygame)
   - [Custom gym environment](#custom-gym-environment)
-  - [Running the code](#running-the-code)
+  - [Opening the notebooks](#opening-the-notebooks)
 
 <hr>
 
@@ -37,7 +37,7 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
 
 ## Experimental  notebooks
 
-During the development of the project some experimental notebooks were created to gain further insight on the Gym environment or performance of some algorithms on classical Gym environments.
+During the development of the project, some experimental notebooks were created to gain further insight into the Gym environment or performance of some algorithms in classical Gym environments.
 
 | **Title**                               | **File location**                                            |
 | --------------------------------------- | ------------------------------------------------------------ |
@@ -67,7 +67,7 @@ For the paper of the project, multiple experiments were performed. The notebooks
 
 ## Base connect four pygame
 
-A basic implementation of a connect four game was made. This game was made using pygame and is adopted from [Nihar99](https://github.com/Nihar99/pygame) and [Solomonleo12345](https://github.com/solomonleo12345/ConnectFour-Game). This game can be played in dual player mode by executing the following commands. By default this will open the game graphically in a popup window and print the board to the terminal.
+A basic implementation of a connect four game was made. This game was made using pygame and is adopted from [Nihar99](https://github.com/Nihar99/pygame) and [Solomonleo12345](https://github.com/solomonleo12345/ConnectFour-Game). This game can be played in dual player mode by executing the following commands. By default, this will open the game graphically in a popup window and print the board to the terminal.
 
 
 ```bash
@@ -77,8 +77,31 @@ conda activate rl-project
 # Go to the GitHub folder of this project
 cd path/to/GitHub/VUB-RL/project/base_connect4_pygame/
 
-# Start a Jupyter notebook server
+# Start the game by calling the py file
 python connect_four.py
+```
+
+
+
+<hr>
+
+
+## Human vs bot game
+
+To test the RL trained agent's behaviour in a realistic game, a game loop is created where an agent for both players can be specified. The specification of the agent is either a pytorch model instance or `me`, specifying the agent should ask the user for input. Thus, using `me` we can play against a bot.
+
+To setup this game loop, it is easiest to use the notebook created especially for it, which will make use of a custom `.py` file based on the base connect four game.
+
+
+```bash
+# Activate the conda environment
+conda activate rl-project
+
+# Go to the GitHub folder of this project
+cd path/to/GitHub/VUB-RL/project/human_vs_bot_connect4/
+
+# Start a Jupyter notebook server
+jupyter notebook
 ```
 
 
@@ -88,16 +111,16 @@ python connect_four.py
 
 ## Custom gym environment
 
-For the creation of the custom Gym environment, the [Gym documentation](https://www.gymlibrary.ml/content/environment_creation/) was used together with the supplied [Gym Examples GitHub repo](https://github.com/Farama-Foundation/gym-examples). To gain better insight on our connect four specific environment, comparable projects were studied such as those by [Andrei Suiu et al](https://github.com/IASIAI/gym-connect-four), [David Cotton](https://github.com/davidcotton/gym-connect4) and [Daniel Hernandez](https://github.com/Danielhp95/gym-connect4).
+For the creation of the custom Gym environment, the [Gym documentation](https://www.gymlibrary.ml/content/environment_creation/) was used together with the supplied [Gym Examples GitHub repo](https://github.com/Farama-Foundation/gym-examples). To gain better insight into our connect four specific environment, comparable projects were studied such as those by [Andrei Suiu et al](https://github.com/IASIAI/gym-connect-four), [David Cotton](https://github.com/davidcotton/gym-connect4) and [Daniel Hernandez](https://github.com/Danielhp95/gym-connect4).
 
-A v2 of the gym environment is also made, this differs from the original gym implementation in the way that it tries to mirror a Petting Zoo environment. This was important since the original environments of Gym don't have multi-agent settings. Petting Zoo does provide multi-agent settings in a semi-standardized manner. Due to it's popularity, this means most libraries supporting multi-agent gym environments rely on the Petting Zoo style of implementation.
+A v2 of the gym environment is also made, this differs from the original gym implementation in the way that it tries to mirror a Petting Zoo environment. This was important since the original environments of Gym don't have multi-agent settings. Petting Zoo does provide multi-agent settings in a semi-standardized manner. Due to its popularity, this means most libraries supporting multi-agent gym environments rely on the Petting Zoo style of implementation.
 
 
 
 <hr>
 
 
-## Running the code
+## Opening the notebooks
 
 An Anaconda environment based on Python 3.8.10 was used for this homework. More information on this environment can be found in the [Anaconda environment documentation for the project](../../documentation/README.md).
 
