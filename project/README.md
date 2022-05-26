@@ -61,6 +61,7 @@ For the paper of the project, multiple experiments were performed. The notebooks
 | 4: Improving DQN agents in connect four                      | Available [here](paper_notebooks/4-improving-dqn-agents.ipynb) |
 | 5: Improving DQN architecture                                | Available [here](paper_notebooks/5-improving-dqn-architecture.ipynb) |
 | 6: DQN using a CNN                                           | Available [here](paper_notebooks/6-dqn-using-a-cnn.ipynb)    |
+| 7: CNN based DQN agent against fixed oponent                 | Available [here](paper_notebooks/7-cnn-dqn-fixed-oponent.ipynb) |
 
 
 
