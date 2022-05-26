@@ -33,6 +33,7 @@ dependencies:
     - argon2-cffi==21.3.0
     - argon2-cffi-bindings==21.2.0
     - asttokens==2.0.5
+    - async-timeout==4.0.2
     - attrs==21.4.0
     - backcall==0.2.0
     - beautifulsoup4==4.11.1
@@ -47,6 +48,7 @@ dependencies:
     - debugpy==1.6.0
     - decorator==5.1.1
     - defusedxml==0.7.1
+    - deprecated==1.2.13
     - distlib==0.3.4
     - dm-tree==0.1.7
     - entrypoints==0.4
@@ -107,6 +109,7 @@ dependencies:
     - pyasn1-modules==0.2.8
     - pycparser==2.21
     - pygame==2.1.2
+    - pyglet==1.5.26
     - pygments==2.12.0
     - pyrsistent==0.18.1
     - pywavelets==1.3.0
@@ -115,6 +118,7 @@ dependencies:
     - pyyaml==6.0
     - pyzmq==23.0.0
     - ray==1.12.1
+    - redis==4.3.1
     - requests==2.27.1
     - requests-oauthlib==1.3.1
     - rsa==4.8
@@ -141,5 +145,6 @@ dependencies:
     - wcwidth==0.2.5
     - webencodings==0.5.1
     - werkzeug==2.1.2
+    - wrapt==1.14.1
     - zipp==3.8.0
 prefix: C:\ProgramData\Anaconda3\envs\rl-project

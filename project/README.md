@@ -59,6 +59,8 @@ For the paper of the project, multiple experiments were performed. The notebooks
 | 3: Connect four with two Deep Q-Network agents from Tianshou | Available [here](paper_notebooks/3-learning-connect-four-dqn-agents-tianshou.ipynb) |
 | 4: Improving DQN agents in connect four                      | Available [here](paper_notebooks/4-improving-dqn-agents.ipynb) |
 | 5: Improving DQN architecture                                | Available [here](paper_notebooks/5-improving-dqn-architecture.ipynb) |
+| 6: DQN using a CNN                                           | Available [here](paper_notebooks/6-dqn-using-a-cnn.ipynb)    |
+| 7: Using RLlib for more multi-agent learning control         | Available [here](paper_notebooks/7-rllib-for-more-learning-control.ipynb) |
 
 
 

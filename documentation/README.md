@@ -139,8 +139,13 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
     pip install tianshou==0.4.8
     
     # Install Tianshou for more RL models.
-    # V0.4.8 was used.
+    # V1.12.1 was used.
+    pip install -U ray==1.12.1
     pip install "ray[rllib]"==1.12.1	
+    
+    # Ray requires redis to init on Windows, even if we won't use it.
+    # V4.3.1 was used
+    pip install redis==4.3.1
     
     # Upgrade your torch installation to support Cuda 11.6.
     # NOTE: only do this if you have a Cuda 11.6 enabled card installed.
