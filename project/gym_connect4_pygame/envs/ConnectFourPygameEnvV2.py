@@ -267,6 +267,7 @@ class raw_env(AECEnv):
             # Board stays as it was, current agent gets negative reward, other no reward
             self.rewards[self.agent_selection] += self.reward_invalid
             self.rewards[next_agent] += 0
+            self.dones = {i: False for i in self.agents}
             return
         
         # End game if player has won or give other oponent the turn
@@ -277,6 +278,7 @@ class raw_env(AECEnv):
             # Game is finished
             self.__game_finished = True
             
+            # One player wins and the other loses
             self.rewards[self.agent_selection] += self.reward_win
             self.rewards[next_agent] += self.reward_loss
             self.dones = {i: True for i in self.agents}
@@ -290,16 +292,16 @@ class raw_env(AECEnv):
             # Game is finished
             self.__game_finished = True
             
-            # Player made winning move, return winning board and done
+            # Player made board filling move, tie
             self.rewards[self.agent_selection] += self.reward_draw
             self.rewards[next_agent] += self.reward_draw
             self.dones = {i: True for i in self.agents}
             return
         
         else:
-            # Reward for doing a move
+            # Reward current agent for doing a move
             self.rewards[self.agent_selection] += self.reward_move
-            self.rewards[next_agent] += self.reward_move
+            self.rewards[next_agent] += 0
             
             # Game continues and switches to next player
             self.__player_one_playing = not self.__player_one_playing
