@@ -39,11 +39,12 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
 
 During the development of the project, some experimental notebooks were created to gain further insight into the Gym environment or performance of some algorithms in classical Gym environments.
 
-| **Title**                               | **File location**                                            |
-| --------------------------------------- | ------------------------------------------------------------ |
-| 1: Testing Gym installation             | Available [here](experimental-notebooks/1-testing-gym-installation.ipynb) |
-| 2: Testing custom Gym environment       | Available [here](experimental-notebooks/2-testing-custom-gym-environment.ipynb) |
-| 3: Petting Zoo connect four environment | Available [here](experimental-notebooks/3-pettingzoo-connectfour.ipynb) |
+| **Title**                                            | **File location**                                            |
+| ---------------------------------------------------- | ------------------------------------------------------------ |
+| 1: Testing Gym installation                          | Available [here](experimental-notebooks/1-testing-gym-installation.ipynb) |
+| 2: Testing custom Gym environment                    | Available [here](experimental-notebooks/2-testing-custom-gym-environment.ipynb) |
+| 3: Petting Zoo connect four environment              | Available [here](experimental-notebooks/3-pettingzoo-connectfour.ipynb) |
+| 4: Using RLlib for more multi-agent learning control | Available [here](experimental-notebooks/4-rllib-for-more-learning-control.ipynb) |
 
 <hr>
 
@@ -60,7 +61,6 @@ For the paper of the project, multiple experiments were performed. The notebooks
 | 4: Improving DQN agents in connect four                      | Available [here](paper_notebooks/4-improving-dqn-agents.ipynb) |
 | 5: Improving DQN architecture                                | Available [here](paper_notebooks/5-improving-dqn-architecture.ipynb) |
 | 6: DQN using a CNN                                           | Available [here](paper_notebooks/6-dqn-using-a-cnn.ipynb)    |
-| 7: Using RLlib for more multi-agent learning control         | Available [here](paper_notebooks/7-rllib-for-more-learning-control.ipynb) |
 
 
 
