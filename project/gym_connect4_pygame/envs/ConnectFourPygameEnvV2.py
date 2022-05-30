@@ -36,6 +36,9 @@ import pygame
 # Numpy for easy numerical data structures
 import numpy as np
 
+# Allow for deep copies
+import copy
+
 # Use pettingzoo for generalised multi agent
 from pettingzoo import AECEnv
 from pettingzoo.utils import wrappers
@@ -62,6 +65,7 @@ REWARD_LOSS = -10
 REWARD_DRAW = 5
 REWARD_INVALID = -1
 REWARD_MOVE = 0
+REWARD_BLOCKING = 0
 
 ####################################################
 # GLOBAL FUNCTIONS FOR PETTING ZOO COMPATIBILITY
@@ -72,6 +76,7 @@ def env(reward_win: int = REWARD_WIN,
         reward_draw: int = REWARD_DRAW,
         reward_invalid: int = REWARD_INVALID,
         reward_move: int = REWARD_MOVE,
+        reward_blocking: int = REWARD_BLOCKING,
         allow_invalid_move: bool = True
         ):
     """
@@ -83,6 +88,7 @@ def env(reward_win: int = REWARD_WIN,
                   reward_draw= reward_draw,
                   reward_invalid= reward_invalid,
                   reward_move= reward_move,
+                  reward_blocking= reward_blocking,
                   allow_invalid_move = allow_invalid_move)
     env = wrappers.TerminateIllegalWrapper(env, illegal_reward=REWARD_INVALID)
     env = wrappers.AssertOutOfBoundsWrapper(env)
@@ -123,7 +129,8 @@ class raw_env(AECEnv):
                  reward_loss: int = REWARD_LOSS,
                  reward_draw: int = REWARD_DRAW,
                  reward_invalid: int = REWARD_INVALID,
-                 reward_move: int = 0,
+                 reward_move: int = REWARD_MOVE,
+                 reward_blocking: int = REWARD_BLOCKING,
                  allow_invalid_move: bool = True):
         # Init from super which is a Petting Zoo class
         # NOTE: V2 edits w.r.t. PettingZoo and Tianshou multi-agent coding convention        
@@ -140,6 +147,7 @@ class raw_env(AECEnv):
         self.reward_draw = reward_draw
         self.reward_invalid = reward_invalid
         self.reward_move = reward_move
+        self.reward_blocking = reward_blocking
         self.allow_invalid_move = allow_invalid_move
         
         # Our game allows for two agents to play
@@ -257,6 +265,10 @@ class raw_env(AECEnv):
         # NOTE: edit for v2 to be Petting Zoo like
         next_agent = self._agent_selector.next()
         
+        # Keep a copy of the old board if we want to check for blocking reward
+        if self.reward_blocking != 0:
+            old_board = copy.deepcopy(self.__board)
+        
         # Try to place the peace
         player_made_valid_move = self._place_piece_in_column(column= action)
         
@@ -302,6 +314,14 @@ class raw_env(AECEnv):
             # Reward current agent for doing a move
             self.rewards[self.agent_selection] += self.reward_move
             self.rewards[next_agent] += 0
+            
+            # Check if a blocking move was made and a reward should be given
+            if self.reward_blocking != 0:
+                if self._blocking_move(board = old_board, action= action, oponent_coin= GRID_PLAYER2_COIN if self.__player_one_playing else GRID_PLAYER1_COIN):
+                    # Reward current agent for doing a blocking move
+                    self.rewards[self.agent_selection] += self.reward_blocking
+                    self.rewards[next_agent] += 0
+                
             
             # Game continues and switches to next player
             self.__player_one_playing = not self.__player_one_playing
@@ -500,6 +520,52 @@ class raw_env(AECEnv):
                         return True
                 
         # No winning board
+        return False
+        
+    def _blocking_move(self, board, action, oponent_coin):
+        """
+        Returns whether or a given action by a given agent would be a blocking move.
+        Needs the oponent coin to check this.
+        """
+        
+        if board[self.grid_row_count - 1][action] != GRID_EMPTY_SPACE:
+            # Invalid move and thus no blocking move
+            return False
+        
+        # Place piece af is it were oponent piece
+        for row in range(self.grid_row_count):
+            if board[row][action] == GRID_EMPTY_SPACE:
+                # Open row found, place piece and break loop
+                board[row][action] = oponent_coin
+                break
+        
+        # Check for win as before, if there is a win for the oponents piece, then the placed piece was a blocking piece.
+        
+        # check all horizontal locations
+        for c in range(self.grid_column_count - 3):
+            for r in range(self.grid_row_count):
+                if board[r][c] == oponent_coin and board[r][c + 1] == oponent_coin and board[r][c + 2] == oponent_coin and board[r][c + 3] == oponent_coin:
+                        return True
+                    
+        # check vertical locations for win
+        for c in range(self.grid_column_count):
+            for r in range(self.grid_row_count - 3):
+                if board[r][c] == oponent_coin and board[r + 1][c] == oponent_coin and board[r + 2][c] == oponent_coin and board[r + 3][c] == oponent_coin:
+                        return True
+
+        # check positively sloped diagonals
+        for c in range(self.grid_column_count - 3):
+            for r in range(self.grid_row_count - 3):
+                if board[r][c] == oponent_coin and board[r + 1][c + 1] == oponent_coin and board[r + 2][c + 2] == oponent_coin and board[r + 3][c + 3] == oponent_coin:
+                        return True
+
+        # check negatively sloped diagonals
+        for c in range(self.grid_column_count - 3):
+            for r in range(3, self.grid_row_count):
+                if board[r][c] == oponent_coin and board[r - 1][c + 1] == oponent_coin and board[r - 2][c + 2] == oponent_coin and board[r - 3][c + 3] == oponent_coin:
+                        return True
+                
+        # No winning board for oponent piece, so it was not a blocking piece
         return False
         
     def _full_board(self):
