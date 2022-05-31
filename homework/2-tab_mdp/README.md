@@ -68,7 +68,7 @@ As typical RL problems can be represented as MDPs, trying to solve MDPs correspo
 
 ![Math](../imgs/2/gt.png)
 
-From this equation, it becomes visible how important it is to choose a good discount factor since a low lambda will result in a *myopic agent* (~greedy) and a high lambda will result in a *farsighted agent* (~exploratory). As a result, not only the reward but also the discount factor determine the goal. It is noted that for some situations the lambda can be 1, resulting in an undiscounted expected return.
+From this equation, it becomes visible how important it is to choose a good discount factor since a low gamma will result in a *myopic agent* (~greedy) and a high gamma will result in a *farsighted agent* (~exploratory). As a result, not only the reward but also the discount factor determine the goal. It is noted that for some situations the gamma can be 1, resulting in an undiscounted expected return.
 
 Repeating all other definitions such as the *state-value function*, *action-value function* and *Bellman optimality equations* here is found to be unnecessary as this would be a simple repetition of the lecture and handbook. It is however important to note the difference between policy evaluation and control:
 
