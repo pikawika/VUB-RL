@@ -156,6 +156,12 @@ The RL project is based on a Python 3.8.10 Anaconda environment. To set up this 
     # NOTE: This is a nightly, non stable build that will only work with Cuda 11.6 GPUs!
     # For a GTX 970, V1.12.0.dev20220520+cu116 was used
     pip install --upgrade --no-deps --force-reinstall torch --pre --extra-index-url https://download.pytorch.org/whl/nightly/cu116
+    
+    # !!! OPTIONAL: PROTOBUF ERRORS !!!
+    # On macOS and possibly other operating systems you can get an error
+    # 	loading tianshou and torch which recommends downgrading protobuf.
+    # The version we used and that works is V3.20.1
+    pip install -I protobuf==3.20.1
     ```
 
 ### Import Anaconda environment
