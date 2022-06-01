@@ -21,6 +21,9 @@ import gym
 import tianshou as ts
 import random as rnd
 
+sys.path.append('../')
+import minimax_agent.minimax_agent as minimaxbot
+
 ####################################################
 # INITIALIZE PYGAME
 ####################################################
@@ -349,11 +352,15 @@ def play_game(player1 = "me",
     # the main loop of the game
     while not game_finished:  
         if player_one_playing and player1!="me":
-            # Player 1 is a bot, let the bot choose a move
-            observation = ts.data.Batch(obs= [board],
-                                        info= {})
-            player1(observation).act[0]
-            bot_selected_column = player1(observation).act[0]
+            
+            if isinstance(player1, minimaxbot.MiniMaxConnectFourBot):
+                # player 1 is minimax agent
+                bot_selected_column = player1.predict(board)
+            else:
+                # Player 1 is a pytorch bot, let the bot choose a move
+                observation = ts.data.Batch(obs= [board],
+                                            info= {})
+                bot_selected_column = player1(observation).act[0]
             
             # If bot made an invalid move, make a random move
             while(not __is_valid_location(board=board, column=bot_selected_column)):
@@ -373,11 +380,14 @@ def play_game(player1 = "me",
             
             
         if (not player_one_playing) and player2!="me":
-            # Player 2 is a bot, let the bot choose a move
-            observation = ts.data.Batch(obs= [board],
-                                        info= {})
-            player2(observation).act[0]
-            bot_selected_column = player2(observation).act[0]
+            if isinstance(player2, minimaxbot.MiniMaxConnectFourBot):
+                # player 2 is minimax agent
+                bot_selected_column = player1.predict(board)
+            else:
+                # Player 2 is a pytorch bot, let the bot choose a move
+                observation = ts.data.Batch(obs= [board],
+                                            info= {})
+                bot_selected_column = player2(observation).act[0]
             
             # If bot made an invalid move, make a random move
             while(not __is_valid_location(board=board, column=bot_selected_column)):
