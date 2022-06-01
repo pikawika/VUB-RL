@@ -250,6 +250,7 @@ class raw_env(AECEnv):
         Performs an action (e.g. coin insert in provided column) on the current state of the board.
         Rewards are as follows:
             - Regular move: 0
+            - Blocking move: 1
             - Invalid move (e.g. full row): -1
             - Move leading to win: +10
             - Move leading to loss: -10
