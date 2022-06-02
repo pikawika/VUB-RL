@@ -7,7 +7,7 @@
 # Author name: Lennert Bontinck
 # Author email: lennert.bontinck@vub.be / info@lennertbontinck.com
 #
-# File based on: https://github.com/KeithGalli/Connect4-Python/blob/master/connect4_with_ai.py
+# Implementation based on: https://github.com/KeithGalli/Connect4-Python/blob/master/connect4_with_ai.py
 
 
 ####################################################
@@ -134,29 +134,29 @@ class MiniMaxConnectFourBot:
         for c in range(self.column_count - 3):
             for r in range(self.row_count):
                 if board[r][c] == grid_player_coin and board[r][c + 1] == grid_player_coin and board[r][c + 2] == grid_player_coin and \
-                        board[r][c + 3] == grid_player_coin:
-                    return True
-
+                    board[r][c + 3] == grid_player_coin:
+                        return True
+                    
         # check vertical locations for win
         for c in range(self.column_count):
             for r in range(self.row_count - 3):
                 if board[r][c] == grid_player_coin and board[r + 1][c] == grid_player_coin and board[r + 2][c] == grid_player_coin and \
-                        board[r + 3][c] == grid_player_coin:
-                    return True
+                    board[r + 3][c] == grid_player_coin:
+                        return True
 
         # check positively sloped diagonals
         for c in range(self.column_count - 3):
             for r in range(self.row_count - 3):
                 if board[r][c] == grid_player_coin and board[r + 1][c + 1] == grid_player_coin and board[r + 2][c + 2] == grid_player_coin and \
-                        board[r + 3][c + 3] == grid_player_coin:
-                    return True
+                    board[r + 3][c + 3] == grid_player_coin:
+                        return True
 
         # check negatively sloped diagonals
         for c in range(self.column_count - 3):
             for r in range(3, self.row_count):
                 if board[r][c] == grid_player_coin and board[r - 1][c + 1] == grid_player_coin and board[r - 2][c + 2] == grid_player_coin and \
-                        board[r - 3][c + 3] == grid_player_coin:
-                    return True
+                    board[r - 3][c + 3] == grid_player_coin:
+                        return True
                 
         # No winning board
         return False
