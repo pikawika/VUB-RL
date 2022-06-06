@@ -127,8 +127,6 @@ Section \ref{sec:intro-irl} discusses the feasibility of developing such complet
 
 \section{Common approaches for reinforcement learning}
 \label{sec:intro-approaches}
-% e.g. tabular, mdp, dl, ... (model free etc)
-% Maar ook DQN en Rainbow
 
 As discussed in section \ref{sec:intro-popular}, \gls{drl} has opened many new doors for the \gls{rl} field, but many more different approaches for \gls{rl} exist.
 A first big division can be made on so called model-based and model-free approaches.
@@ -174,7 +172,6 @@ Since \gls{dl} is known to be great at reducing high-dimensional data such as im
 
 \section{Classical reinforcement learning problems}
 \label{sec:intro-classical_rl}
-% gym etc
 
 A complete \glsfirst{rl} system consists of three main components: a conversion mechanism from an environment state to a computer representation of that state, a \gls{rl} algorithm that maps that environment state to an action and a component responsible for executing the chosen action.
 In a real life environment system, these three different components often require a multi-disciplinary team to be implemented.
@@ -217,7 +214,6 @@ Petting Zoo provides multi-agent games from the Atari 2600 amongst other classic
 
 \section{Feasibility of using reinforcement learning in real life}
 \label{sec:intro-irl}
-% e.g. optimalisatie van dingen etc
 
 In section \ref{sec:intro-classical_rl}, it was discussed how a complete \gls{rl} system consists of three main components which often require a multi-disciplinary team to create.
 Finding the right people for such a team is not only a hard task, but can require significant monetary resources as well.
@@ -234,10 +230,10 @@ This explains in part why many of the big examples of \gls{rl} originate from th
 
 Luckily, new state-of-the-art in \gls{rl} and \gls{drl} has shown to be far more sample efficient and general.
 Take for example the Rainbow algorithm by \citet{rainbow}.
-In their paper, \citet{rainbow} studied six extensions to the popular \gls{dqn} algorithm and combined the strong points into a singular \gls{rl} algorithm they call Rainbow.
+In their paper, \citet{rainbow} studied six extensions to the popular \gls{dqn} based algorithm by \Citet{dqn} and combined the strong points into a singular \gls{rl} algorithm they call Rainbow.
 Not only does Rainbow significantly outperform these extensions on the Atari 2600 games which were discussed in section \ref{sec:intro-classical_rl}, it does so by requiring far fewer samples.
-With the distributional DQN extension proposed by \citet{distributional_dqn} being the best out of the six extensions when tested individually, Rainbow used 7 million frames compared to 44 million frames of training required by the distributional DQN approach.
-The final best-found performance of Rainbow when looking at the median human-normalized score was 223\% compared to 164\% of distributional DQN.
+With the distributional \gls{dqn} extension proposed by \citet{distributional_dqn} being the best out of the six extensions when tested individually, Rainbow used 7 million frames compared to 44 million frames of training required by the distributional \gls{dqn} approach.
+The final best-found performance of Rainbow when looking at the median human-normalized score was 223\% compared to 164\% of distributional \gls{dqn}.
 A recent follow-up of AlphaGo named MuZero by \citet{muzero} is also significantly faster in training and didn't require domain knowledge.
 This also made the system more generalized, as shown by the EfficientZero system proposed by \citet{efficient_zero} which is based on MuZero. EfficientZero got human performance as the median for the Atari 2600 games in just two hours of what they call real-time game experience.
 This shows that new state-of-the-art algorithms can reduce the above-mentioned feasibility challenges with \gls{rl} to a certain extent.

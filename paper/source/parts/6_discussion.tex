@@ -1,34 +1,48 @@
 \chapter{Discussion}
 \label{ch:discussion}
 
+Having introduced both \glsfirst{rl} and \glsfirst{marl}, the previous chapters discussed the implementation and evaluation of connect four \gls{rl} agents.
+This chapter discusses all of these previous chapters and the discussed findings.
+It finishes off with closing remarks and potential future work.
+
 %------------------------------------
 
 \section{Using general purpose libraries for custom tasks}
 \label{sec:discussion-library_support}
-% Ray RLlib brakka & Tianshou issues but still better then doing it yourself
 
-TODO
+Part of the reason that using \gls{rl} agents as a way of providing a computer opponent in simple games could be feasible, is the fact that many libraries exist which provide very complex \gls{rl} algorithms with relatively small amounts of code.
+However, these libraries are tailored to work with only the most popular environments and most of them focus on single-agent \gls{rl}.
+Even when \gls{marl} environments are supported, they have to be of a specific type, such as a Petting Zoo environment.
+This paper discussed that this Petting Zoo environment, contrary to the Gym environment, does not provide clear instructions on how to make a custom environment and thus some troubleshooting is to be expected.
+However, converting relatively simple Pygame based games to a Petting Zoo library should be feasible and thus using \gls{rl} algorithm providing libraries such as Tianshou should also be able to be used on these games.
+Whilst this is great, the support for Petting Zoo and \gls{marl} in general is something that should be improved.
+For example, the Ray RLlib library by \citet{rllib} claims to have support for Petting Zoo environments but the Ray RLlib provided example fails to work as it gives undocumented errors.
+This is shown in the experimental notebook 4 available on the GitHub repository of this project \citep{github_project}.
+Likewise, the Tianshou library has multiple known issues with its support for \gls{marl}, such as the problem of using a batch size different than 1 for \gls{dqn} agents in a multi-policy manager.
+
+
 
 %------------------------------------
 
 \section{Reinforcement learning for indie developers}
 \label{sec:discussion-rl_for_indie}
-% Changes needed especially regarding computational time required but cloud computing maybe solution
-% Good school project tho
 
-TODO
-
-%------------------------------------
-
-\section{Takeaways from the experiments}
-\label{sec:discussion-takeaways}
-
-TODO
+With over 70 GitHub commits and many hours put into this project, providing a \gls{rl} bot as a computer opponent for connect four was arguably too hard to be feasible.
+After all, the development of the game would take less time than the development of a pleasing bot.
+However, the best-found Rainbow policy is a pleasing amateur level computer opponent for connect four.
+This is far better than rule-based policies such as mini-max, where the behaviour of the bot feels inhuman and some faults humans make can't be made with them.
+The \gls{cnn} based Rainbow opponent proposed in this paper is therefore far more human and more pleasant than the mini-max agent is in playing connect four.
+However, even the best-found policy has clear flaws as discussed in section \ref{sec:connect_four_eval-rainbow_vs_human} and the attempt at making a varying difficulty policy failed as discussed in section \ref{sec:connect_four_eval-varying_difficulty}.
+However, both of these issues seem solvable, one through longer training and the other through some form of parameter tuning.
+This is promising but for it to become feasible that indie developers use \gls{rl} as video game opponents, even more sample-efficient \gls{rl} algorithms should be proposed in combination with better documented and supported libraries as mentioned in section \ref{sec:discussion-library_support}.
 
 %------------------------------------
 
 \section{Future work}
 \label{sec:discussion-future_work}
-% Offline learning through human play of your game en uitleggen hoe off policy daarvoor nodig is
 
-TODO
+Section \ref{sec:connect_four_eval-rainbow_vs_human} and \ref{sec:connect_four_eval-varying_difficulty} proposed potential ways to improve the found \gls{cnn} based rainbow policy and to provide a varying difficulty bot.
+Doing these proposed experiments is something that could be of interest to further back the claim that \gls{rl} will ultimately be an amazing tool for providing video game opponents that are more human-like.
+Besides this, this project only focused on online training.
+Since these games often also support regular multiplayer, the games played between humans could potentially be used as a dataset for offline training.
+Finally, testing different \gls{rl} algorithms on the created custom Petting Zoo environment can also give potentially great results. 

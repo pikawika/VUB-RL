@@ -67,6 +67,7 @@ For the paper of the project, multiple experiments were performed. The notebooks
 | 9: Using the Rainbow algorithm to learn connect four         | Available [here](paper_notebooks/9-rainbow.ipynb)            | Available [here](paper_notebooks/html_exports/9-rainbow.html) |
 | 10: CNN based Rainbow agent against fixed opponent           | Available [here](paper_notebooks/10-rainbow-fixed-opponent.ipynb) | Available [here](paper_notebooks/html_exports/10-rainbow-fixed-opponent.html) |
 | 11: CNN based Rainbow vs minimax                             | Available [here](paper_notebooks/11-rainbow-vs-minimax.ipynb) | Available [here](paper_notebooks/html_exports/11-rainbow-vs-minimax.html) |
+| 12: Bot vs random agent                                      | Available [here](paper_notebooks/12-bot-vs-random-agent.ipynb) | Available [here](paper_notebooks/html_exports/12-bot-vs-random-agent.html) |
 
 
 
