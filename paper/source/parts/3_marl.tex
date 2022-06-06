@@ -1,0 +1,144 @@
+\chapter{Multi-agent reinforcement learning}
+\label{ch:marl}
+
+The previous chapter gave a brief introduction to \glsfirst{rl}.
+Section \ref{sec:intro-classical_rl} discussed how common tasks in \gls{rl} literature includes playing games.
+However, many of the common \gls{rl} tasks and the often used Atari 2600 games are single-agent environments or single-agent variants of multi-agent environments.
+For the feasibility study of this paper, \glsfirst{marl} is needed.
+This chapter gives a brief overview of what \gls{marl} is and how it differs from the previously discussed \gls{rl} problem.
+Some of the challenges in \gls{marl} are also addressed.
+Finally, a brief discussion on existing literature for using \gls{rl} as means of creating computer opponents in games is discussed in this chapter.
+
+%------------------------------------
+
+\section{The difference between single-agent and multi-agent environments}
+\label{sec:marl-vs_single}
+
+\Glsfirst{marl} is a generalisation of single-agent \gls{rl} which was formally defined with \glspl{mdp} in section \ref{sec:intro-mdp}.
+Contrary to what the name suggests, \gls{marl} is not simply any \gls{rl} setting where more than one agent is present.
+For example, the Gym library by \citet{gym} provides the Atari 2600 game Pong and considers it to be a single-agent environment.
+However, Pong is a tennis themed game where a ball is played back and forward between two players in a 2D setting.
+But because the opponent player in this Gym implementation of the Pong environment is a fixed strategy, rule-based, entity which does not learn or adapt itself in the environment, it is not considered to be a \gls{marl} setting.
+As such, the opponent agent can be seen as a part of the environment and the learning agent does not have to take into account the presence of this agent in the environment.
+\Citet{rl_tutorial} argue a \gls{rl} setting is only considered \gls{marl} when a set of agents learn in a shared environment through interaction with the environment and the other agents, either directly or indirectly.
+Since the computer-opponent in that Pong environment does not learn, the environment is not seen as a \gls{marl} environment following this definition.
+The pong environment provided by the Petting Zoo environment \citep{pettingzoo} allows for using another \gls{rl} agent as an opponent.
+In that environment, two agents would be learning and playing against each other, making that Pong environment a \gls{marl} environment according to the previously given definition.
+Intuitively, \gls{marl} should not only include multiple acting agents in the environment, but these agents should also be learning in the environment and adapting to it.
+However, there does not seem to be a shared formal definition of what can and can't be considered \gls{marl}.
+For example, \citet{marl_intro} put less stress on the learning aspect of the agents interacting in a \gls{marl} environment.
+
+In section \ref{sec:intro-mdp}, it was discussed how \gls{rl} problems can be formalised as a \glsfirst{mdp}.
+This mathematically idealized form of the \gls{rl} problem does not allow a direct way of formalising \gls{marl} settings.
+For this reason, a generalisation of \glspl{mdp} called stochastic games are used to formalise the multi-agent settings.
+Equation \ref{eq:marl_stoch-game} gives the mathematical definition of a stochastic game.
+A further explanation of the mathematical differences between \glspl{mdp} and stochastic games falls outside the scope of this paper and is not required for the development and understanding of this paper's proposed system.
+\Citet{stoch_games} and \citet{marl_intro} provide a great introduction to these more mathematical aspects of \gls{marl} and stochastic games.
+
+
+\begin{equation}
+\begin{aligned}
+\text{Stochastic game} &= \langle X, \pmb{U}, f, \pmb{\rho} \rangle
+\\
+X &= \text{A set of states}
+\\
+\pmb{U} &= U_1 \times U_2 \times ... \times U_n \\
+&= \text{Joined action set of $n$ agents}
+\\
+f &= X \times \pmb{U} \times X \in [0.1] \\
+&= \text{State transition probability function}
+\\
+\pmb{\rho} &=  \{ \rho_1, ... \rho_n \} \text{ with } \rho_i = X \times \pmb{U} \times X \in \mathbb{R} \\
+&= \text{Reward functions of $n$ agents}
+\end{aligned}
+\label{eq:marl_stoch-game}
+\end{equation}
+
+
+%------------------------------------
+
+\section{Approaches to multi-agent reinforcement learning}
+\label{sec:marl_opponents}
+
+The strategies used for the different agents present in \gls{marl} can differ greatly, and the behaviour of the other agents in the environment can influence the learned policy by an individual agent.
+If the agents share a common goal, where playing as a team is important, the learned policy for playing the game will differ greatly from a setting where agents play against each other.
+The predictability of the other agents in the environment will also influence the learned policy of an agent.
+Many other influencing factors can be listed and in general, the type of agents present in a multi-agent environment will influence the learned policy together with the reward and gamma that also influenced the agent's policy in single-agent environments.
+
+One of the most common approaches in \gls{marl} is using agents that all share the same \gls{rl} algorithm for training.
+This strategy is referred to as self-play.
+Intuitively, by doing self-play all agents should incrementally improve their behaviour, forming a smarter opponent or teammate, which aids in further improving its learned policy until it converges. 
+This approach requires the least edits from a single-agent environment and requires no additional knowledge or data, which is great for general applicability. 
+However, self-play can have many unwanted side effects and there are many potential issues with this approach.
+Section \ref{sec:marl-challenges} highlights some of these issues.
+Many techniques to incorporate with self-play have been proposed to combat the potential issues of the approach \citep{selfplay, selfplay2, selfplay3}.
+
+Another strategy that is often used in \gls{marl}, is to train agents against a random policy.
+This strategy is often combined with highly exploratory parameters for the agent so that the learning agent learns a policy from a broad range of samples.
+Whilst the resulting policy is often not that good, especially in settings where agents are meant to play against each other, it is often better than the initial policy of an agent which is almost always a random policy itself.
+This learned policy from playing against a random agent is often used in further training in more complex strategies such as self-play.
+
+
+As an alternative for playing against a random policy, the agent can play against a fixed strategy agent to obtain a good base policy for further training through self-play or other techniques.
+The fixed policy should not be too predictable so that the agent learns the general game rules rather than a good response to the behaviour of the other agents.
+This often means that this fixed policy requires a certain amount of domain knowledge which takes away from the attractive property of \gls{rl} that it does not strictly require domain knowledge or starting data.
+However, as \gls{marl} is often a significantly harder problem than single-agent alternatives, some form of domain knowledge is often required, as was also the case for AlphaGo by \citet{alphago} discussed in section \ref{sec:intro-popular}.
+One bonus of using a fixed policy based on domain knowledge is the possibility of creating varying difficulty levels of the policy, especially in duelling environments.
+This can allow for an approach called league-based training, where an agent is trained against increasing difficulty opponents. 
+It should be noted that a random or fixed policy agent does not learn from the environment, this means that this strategy can be seen as single-agent \gls{rl} according to the definition of \gls{marl} given in section \ref{sec:marl-vs_single}.
+
+
+A final approach that is worth mentioning for this paper, is an extension on self-play where the \gls{rl} agents use differing \gls{rl} algorithms.
+This allows for comparing the performance of different \gls{rl} algorithms in a certain environment, where agents in a duelling environment using a specific algorithm might have a higher reward rate and thus can be seen as the better performing algorithm.
+This approach can also aid in reducing the risk that a learned policy is overfitting on the strategies of the other agents in the environment rather than learning a good general policy for the environment. 
+\Citet{marl_intro} gives a more in-depth overview of different approaches to \gls{marl}.
+
+
+%------------------------------------
+
+\section{Challenges with multi-agent reinforcement learning}
+\label{sec:marl-challenges} 
+
+Single-agent \gls{rl} can already be highly challenging when used in complex environments.
+Adding multiple agents to the learning process with \gls{marl} makes the learning process harder and causes a set of new challenges to arise.
+One of the most challenging problems is the problem of non-stationarity.
+The problem an individual agent should learn to solve changes as the policy of the simultaneously learned agents also changes.
+If such changes are too rapid, the target for an individual agent might be moving too fast so that the agent can never learn a good policy.
+\Citet{non_station} discuss this issue in greater detail and give some potential methods to reduce this issue.
+
+Another very challenging issue is the fact that \gls{marl} is less stable in general and requires more samples for learning.
+This makes \gls{marl} computationally even harder then the already computationally hard single-agent \gls{rl} problems.
+However, as was the case for single-agent \gls{rl}, literature in \gls{marl} has proposed methods that greatly improve the sample efficiency of \gls{marl} and aim to stabilise the training process.
+\citet{selfplay} discuss some of the techniques that can be used for giving better stability and sample-efficiency in self-play. 
+
+\Citet{rl_tutorial} and \citet{marl_intro} discuss other common challenges with \gls{marl} such as partial observability and scalability issues, but these fall outside the scope of this paper.
+
+%------------------------------------
+
+\section{Using reinforcement-learning as a computer opponent in games}
+\label{sec:marl-games_opponent}
+
+As a potential use case for \gls{rl} \glsfirst{irl}, this paper aims to study the feasibility of using \gls{marl} techniques to create an agent that can be used as a computer opponent in simple Python games.
+In particular, this paper aims to modify an existing connect four game implemented with Pygame so that it is compatible with common \gls{rl} libraries.
+Afterwards, those common \gls{rl} libraries are used to train common \gls{rl} algorithms on the game.
+Multiple variants of the learned policy should ultimately be stored to have the option of an increasing difficulty computer opponent that is more human-like than rule-based policies.
+If feasible, this could enable small developers to provide computer opponents in their game without having to code a rule-based agent for it, which can often be hard or even impossible.
+The computational power of doing a prediction from an already trained \gls{rl} agent is also very manageable on most hardware and often takes no more than a few milliseconds.
+This is far more desirable than approaches that rely on exploring game trees which can take a lot of computational power and time.
+
+Since many of the commonly used tasks for \gls{rl} discussed in section \ref{sec:intro-classical_rl} revolve around playing video games such as Atari 2600 games, much literature exists on creating excellent performing bots for certain video games \citep{rainbow, dqn, efficient_zero, selfplay3, videogame_rl}.
+However, the evaluation of these algorithms is often based on win rates against other \gls{rl} algorithms or compared to the median human-normalized score.
+Whilst these are great objective measures, they don't tell much about the actual learned policy and how \textit{human-like} it is.
+An algorithm with excellent performance according to these metrics might follow a policy that is completely different from classical human behaviour.
+The world champion Go beating algorithm, AplhaGo by \citet{alphago} made some surprising moves that many professional Go players labelled as very strange.
+The 37th move in the second game was so odd that some of the expert commentators of the live match thought it was a mistake by the \gls{rl} system.
+Whilst creative moves like these can give great new insight into potential policies to be used in these games which humans may not have thought of, such surprising behaviour is not the desired behaviour of most computer controlled video game opponents.
+For this reason, this paper focuses on a more subjective evaluation of the emerged policies.
+
+
+Since academic literature often focuses on beating state-of-the-art or human-level performance in games, literature on using \gls{rl} as opponents in video games is rather limited.
+\Citet{human_rl_fight_game} focused on creating a human-like \gls{rl} agent for an arcade style fighting game.
+Their findings showed promising potential but were not satisfactory for general use.
+\Citet{human_rl_fight_game} showed how training an \gls{rl} agent requires a more thought through reward strategy and that objective measures don't reflect the subjectively found performance of the agents.
+Non scientific resources explore this idea a lot, with some examples for connect four specific \gls{rl} agents existing online \citep{connectfour_rl, connectfour_cnn}.
+However, these approaches are rather vague on the learned policy of the agent and actual usability of the learned policy as a fun connect four computer opponent. 

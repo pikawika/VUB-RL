@@ -15,6 +15,9 @@
     urlcolor=black
 }
 
+% Used for abbrivations etc
+\usepackage{glossaries}
+
 % Some highly suggested packages, please read their manuals.
 \usepackage{cleveref}
 \usepackage[natbib,style=apa]{biblatex}
@@ -51,6 +54,23 @@
 % subfigures
 \usepackage{subcaption}
 
+% Math
+\usepackage{amsmath,bm}
+\usepackage{amsfonts}
+
+% Code
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\DontPrintSemicolon
+\renewcommand{\KwSty}[1]{\textnormal{\textcolor{blue!90!black}{\ttfamily\bfseries #1}}\unskip}
+\renewcommand{\ArgSty}[1]{\textnormal{\ttfamily #1}\unskip}
+\SetKwComment{Comment}{\color{green!50!black}// }{}
+\renewcommand{\CommentSty}[1]{\textnormal{\ttfamily\color{green!50!black}#1}\unskip}
+\newcommand{\assign}{\leftarrow}
+\newcommand{\var}{\texttt}
+\newcommand{\FuncCall}[2]{\texttt{\bfseries #1(#2)}}
+\SetKwProg{Function}{function}{}{}
+\renewcommand{\ProgSty}[1]{\texttt{\bfseries #1}}
+
 % remove chapter text
 \usepackage{titlesec}
 
@@ -58,6 +78,12 @@
   {\normalfont\huge\bfseries}{}{0pt}{\Huge}
 \titlespacing*{\chapter}
   {0pt}{0pt}{15pt}
+
+% Init glossary
+\makenoidxglossaries
+
+% Add glossary entries
+\input{parts/G_abbreviations_definition}
 
 %START title
 \input{parts/1_title}
@@ -72,7 +98,14 @@
 \mainmatter
 
 %START MAIN
-\input{parts/2_todo}
+\input{parts/2_intro}
+\input{parts/3_marl}
+\input{parts/4_learning_connect4}
+\input{parts/5_evaluation}
+\input{parts/6_discussion}
+
+% Glossary
+\input{parts/F_abbreviations}
 
 %references list
 \nocite{*}
